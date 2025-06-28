@@ -19,7 +19,7 @@ export default function FeaturesPage() {
                             DeVote
                         </span>
                     </h1>
-                    <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
+                    <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto leading-8">
                         Discover how DeVote leverages Web3 to build the future of democratic participation.
                     </p>
                 </div>

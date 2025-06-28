@@ -21,7 +21,7 @@ export default function HowItWorks() {
                             DeVote
                         </span>
                     </h1>
-                    <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
+                    <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto leading-8">
                         Learn how DeVote simplifies the election process using blockchain technology — ensuring
                         fairness, transparency, and security from start to finish.
                     </p>
