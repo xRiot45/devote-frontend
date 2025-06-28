@@ -6,7 +6,7 @@ import Image from 'next/image';
 
 export default function Welcome() {
     return (
-        <section className="relative pt-32 pb-40 overflow-hidden font-sans px-6 transition-colors duration-300 bg-white text-black dark:bg-transparent dark:text-white">
+        <section className="relative pt-32 pb-40 overflow-hidden px-6 transition-colors duration-300 bg-white text-black dark:bg-transparent dark:text-white">
             {/* Background gradients hanya untuk dark mode */}
             <div className="absolute -top-20 -left-40 w-[500px] h-[500px] bg-purple-600/30 rounded-full blur-3xl opacity-60 z-0 hidden dark:block" />
             <div className="absolute top-1/2 right-0 w-[600px] h-[600px] bg-indigo-500/20 rounded-full blur-3xl opacity-50 z-0 hidden dark:block" />
@@ -25,7 +25,7 @@ export default function Welcome() {
                 </div>
 
                 {/* Left Content */}
-                <div className="order-2 md:order-1 font-sans">
+                <div className="order-2 md:order-1">
                     <h2 className="text-sm uppercase tracking-widest  font-semibold">Welcome to DeVote</h2>
                     <h1 className="mt-3 text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight tracking-tight">
                         Revolutionize Elections <br />
