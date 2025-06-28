@@ -1,6 +1,8 @@
+'use client';
+
 import IlustrationImage from '@/assets/images/illustration.png';
+import Feature from '@/components/feature';
 import { Button } from '@/components/ui/button';
-import Feature from '@/components/ui/feature';
 import { BookOpenIcon, FingerprintIcon, GlobeIcon, ShieldCheckIcon, UsersIcon, WalletIcon } from 'lucide-react';
 import Image from 'next/image';
 
