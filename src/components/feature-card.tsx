@@ -15,7 +15,7 @@ const FeatureCard: React.FC<FeatureCardProps> = ({ icon, title, description }: F
                 'bg-white/80 dark:bg-white/5 border border-gray-200 dark:border-white/10 shadow-none dark:shadow-md backdrop-blur-xl transition-colors',
             )}
         >
-            <CardContent className="p-6 flex flex-col items-start">
+            <CardContent className="py-6 px-8 flex flex-col items-start">
                 <div className="mb-4">{icon}</div>
                 <h3 className="text-lg font-semibold mb-2">{title}</h3>
                 <p className="text-muted-foreground text-sm">{description}</p>
