@@ -1,3 +1,4 @@
+import IlustrationImage from '@/assets/images/illustration.png';
 import { Button } from '@/components/ui/button';
 import {
     Drawer,
@@ -18,6 +19,7 @@ import {
     WalletIcon,
     X,
 } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
 
 export default function HeroWithNavbar() {
@@ -111,12 +113,14 @@ function Hero() {
 
             {/* Content */}
             <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-14 items-center max-w-7xl mx-auto">
-                {/* Right Illustration for mobile first (order 1 on small, order 2 on md) */}
+                {/* Right Illustration  */}
                 <div className="order-1 md:order-2 flex justify-center relative">
-                    <div className="relative w-full max-w-md aspect-square rounded-3xl bg-white/5 border border-white/10 shadow-xl backdrop-blur-lg overflow-hidden">
-                        <div className="absolute inset-0 flex items-center justify-center p-6 text-center text-white/60 text-sm font-sans">
-                            Web3 Voting Illustration Placeholder
-                        </div>
+                    <div className="relative w-full max-w-2xl aspect-square rounded-3xl overflow-hidden">
+                        <Image
+                            src={IlustrationImage}
+                            alt="Web3 Voting Illustration"
+                            className="w-full h-full object-contain"
+                        />
                     </div>
                 </div>
 
@@ -165,8 +169,8 @@ function Hero() {
                         />
                         <Feature
                             icon={<UsersIcon className="w-6 h-6 text-blue-400" />}
-                            title="Anonymous Identity"
-                            description="Voter privacy is protected with zero-knowledge proof."
+                            title="Semi Anonymous Identity"
+                            description="User identity is verified off-chain, while votes remain private on-chain."
                         />
                         <Feature
                             icon={<GlobeIcon className="w-6 h-6 text-yellow-400" />}
