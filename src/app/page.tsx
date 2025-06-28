@@ -73,15 +73,16 @@ function Hero() {
                     </p>
                     <div className="mt-8 flex flex-col sm:flex-row gap-4 font-sans">
                         <Button
+                            variant="default"
                             size="lg"
-                            className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white shadow-lg font-sans cursor-pointer hover:bg-gradient-to-r hover:from-indigo-600 hover:to-purple-700 transition-all"
+                            className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white shadow-lg font-sans cursor-pointer hover:bg-gradient-to-r hover:from-indigo-600 hover:to-purple-700 transition-all py-6"
                         >
                             <WalletIcon className="w-5 h-5 mr-2" /> Connect To Wallet
                         </Button>
                         <Button
                             variant="outline"
                             size="lg"
-                            className="text-black hover:text-white cursor-pointer border-white/30 hover:bg-white/10 font-sans"
+                            className="text-black hover:text-white cursor-pointer border-white/30 hover:bg-white/10 font-sans py-6"
                         >
                             <BookOpenIcon className="w-5 h-5 mr-2" />
                             Learn More
@@ -104,7 +105,7 @@ function Hero() {
                             description="Voter privacy is protected with zero-knowledge proof."
                         />
                         <Feature
-                            icon={<GlobeIcon className="w-4 h-4 text-yellow-400" />}
+                            icon={<GlobeIcon className="w-6 h-6 text-yellow-400" />}
                             title="Global Participation"
                             description="Access from anywhere with only a wallet."
                         />
