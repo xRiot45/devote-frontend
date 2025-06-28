@@ -7,7 +7,11 @@ interface AppLayoutProps {
 
 export default function AppLayout({ children }: AppLayoutProps) {
     return (
-        <main className="bg-gradient-to-br from-[#0f051d] via-[#1c0533] to-[#120422] text-white min-h-screen font-sans">
+        <main
+            className="min-h-screen font-sans transition-colors duration-300
+        bg-white text-black 
+        dark:bg-gradient-to-br dark:from-[#0f051d] dark:via-[#1c0533] dark:to-[#120422] dark:text-white"
+        >
             <Navbar />
             {children}
         </main>
