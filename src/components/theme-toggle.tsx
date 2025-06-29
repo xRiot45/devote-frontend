@@ -25,7 +25,7 @@ export default function ThemeToggle() {
                 </Button>
             </DropdownMenuTrigger>
 
-            <DropdownMenuContent align="end" className="w-64 text-foreground bg-background">
+            <DropdownMenuContent align="end" className="w-64 text-foreground bg-background mt-4 p-2 rounded-lg">
                 <DropdownMenuItem onClick={() => updateAppearance('light')} className="cursor-pointer p-3">
                     <SunIcon className="w-4 h-4 mr-2 text-black dark:text-white" /> Light
                 </DropdownMenuItem>

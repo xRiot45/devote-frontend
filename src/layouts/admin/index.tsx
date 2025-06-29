@@ -13,7 +13,7 @@ export default function AdminLayout({ children, breadcrumbs = [] }: AdminLayoutP
     return (
         <Shell variant="sidebar">
             <SidebarAdmin />
-            <Content variant="sidebar">
+            <Content variant="sidebar" className="px-6 md:px-4">
                 <Header breadcrumbs={breadcrumbs} />
                 {children}
             </Content>
