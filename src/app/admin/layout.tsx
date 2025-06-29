@@ -10,7 +10,6 @@ const poppins = Poppins({
 });
 
 export default function AdminPageLayout({ children }: { children: React.ReactNode }) {
-    console.log('✅ Admin layout digunakan');
     return (
         <div className={`${poppins.variable} antialiased`}>
             <AdminLayout>{children}</AdminLayout>
