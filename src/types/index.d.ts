@@ -15,3 +15,12 @@ export interface NavItem {
     isActive?: boolean;
     submenu?: NavItem[];
 }
+
+export interface SidebarItem {
+    title: string;
+    icon: string;
+    submenu?: {
+        title: string;
+        href: string;
+    }[];
+}

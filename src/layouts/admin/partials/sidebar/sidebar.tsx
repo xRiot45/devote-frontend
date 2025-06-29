@@ -1,3 +1,5 @@
+'use client';
+
 import {
     Sidebar,
     SidebarContent,
@@ -16,14 +18,14 @@ import mainNavItems from './main-nav-items';
 
 export function SidebarAdmin() {
     return (
-        <Sidebar collapsible="offcanvas" variant="inset">
-            <SidebarHeader>
+        <Sidebar collapsible="offcanvas" variant="inset" className="bg-white dark:bg-black border-r">
+            <SidebarHeader className="dark:bg-black hover:bg-none">
                 <SidebarMenu>
                     <SidebarMenuItem>
-                        <SidebarMenuButton asChild size="lg">
+                        <SidebarMenuButton asChild size="lg" className="dark:bg-black hover:bg-none">
                             <div className="text-xl font-bold tracking-tight">
                                 <Link
-                                    href="/"
+                                    href="/admin/dashboard"
                                     className="bg-gradient-to-r from-indigo-400 to-purple-500 text-transparent bg-clip-text"
                                 >
                                     DeVote
@@ -34,7 +36,7 @@ export function SidebarAdmin() {
                 </SidebarMenu>
             </SidebarHeader>
 
-            <SidebarContent>
+            <SidebarContent className="bg-white dark:bg-black px-2">
                 {mainNavItems.map(({ group, items }) => (
                     <SidebarGroup key={group || 'no-group'}>
                         {group && <SidebarGroupLabel>{group}</SidebarGroupLabel>}
@@ -51,8 +53,8 @@ export function SidebarAdmin() {
                 ))}
             </SidebarContent>
 
-            <SidebarFooter>
-                <h1>Admin</h1>
+            <SidebarFooter className="dark:bg-black">
+                <h1 className="px-4 py-2 text-sm text-muted-foreground">Admin</h1>
             </SidebarFooter>
         </Sidebar>
     );

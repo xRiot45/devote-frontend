@@ -1,28 +1,41 @@
-import { SidebarGroup, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
-import { type NavItem } from '@/types';
+'use client';
+
+import { cn } from '@/lib/utils';
 import { Icon } from '@iconify/react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+
+interface NavItem {
+    title: string;
+    href: string;
+    icon: string;
+}
 
 interface NavMainProps {
     items: NavItem[];
 }
 
-const NavMain: React.FC<NavMainProps> = ({ items = [] }) => {
+const NavMain: React.FC<NavMainProps> = ({ items }) => {
+    const pathname = usePathname();
+
     return (
-        <SidebarGroup>
-            <SidebarMenu>
-                {items.map((item) => (
-                    <SidebarMenuItem key={item.title}>
-                        <SidebarMenuButton asChild className="px-4 py-6">
-                            <Link href={item.href} prefetch className="flex min-w-0 items-center gap-x-3">
-                                <Icon icon={item.icon} />
-                                <span className="truncate">{item.title}</span>
-                            </Link>
-                        </SidebarMenuButton>
-                    </SidebarMenuItem>
-                ))}
-            </SidebarMenu>
-        </SidebarGroup>
+        <>
+            {items.map((item) => (
+                <Link
+                    key={item.href}
+                    href={item.href}
+                    className={cn(
+                        'flex items-center gap-x-3 rounded-md p-4 text-sm font-light hover:bg-gray-100 dark:hover:bg-[#2a2a2a]',
+                        pathname === item.href
+                            ? 'bg-gradient-to-r from-indigo-400 to-purple-500 text-white'
+                            : 'text-black dark:text-white',
+                    )}
+                >
+                    <Icon icon={item.icon} />
+                    <span className="truncate text-md">{item.title}</span>
+                </Link>
+            ))}
+        </>
     );
 };
 
