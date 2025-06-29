@@ -1,10 +1,15 @@
-'use client';
-
 import IlustrationImage from '@/assets/images/illustration.png';
 import { Card, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Code, Server, ShieldCheck, Users, Wallet } from 'lucide-react';
+import { Metadata } from 'next';
 import Image from 'next/image';
+
+export const metadata: Metadata = {
+    title: 'About',
+    description:
+        'Learn about DeVote, a Web3-based voting platform committed to secure, transparent, and tamper-proof digital elections.',
+};
 
 export default function AboutPage() {
     return (

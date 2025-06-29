@@ -1,7 +1,12 @@
-'use client';
-
 import FeatureCard from '@/components/feature-card';
 import { FingerprintIcon, GlobeIcon, ShieldCheckIcon, UsersIcon } from 'lucide-react';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+    title: 'Features',
+    description:
+        'Explore DeVote’s key features that ensure secure, transparent, and tamper-proof digital voting using Web3 technology.',
+};
 
 export default function FeaturesPage() {
     return (

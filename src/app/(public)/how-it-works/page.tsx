@@ -1,9 +1,14 @@
-'use client';
-
 import StepCard from '@/components/step-card';
 import { CheckCircleIcon, GlobeIcon, ShieldCheckIcon, StepForwardIcon, WalletIcon, ZapIcon } from 'lucide-react';
+import { Metadata } from 'next';
 
-export default function HowItWorks() {
+export const metadata: Metadata = {
+    title: 'How It Works',
+    description:
+        'Learn how DeVote enables secure and transparent digital voting through a simple, step-by-step Web3-based process.',
+};
+
+export default function HowItWorksPage() {
     return (
         <section className="relative pt-32 pb-72 overflow-hidden px-6 transition-colors duration-300 bg-white text-black dark:bg-transparent dark:text-white">
             {/* Dark mode gradients */}

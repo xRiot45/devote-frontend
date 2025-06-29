@@ -1,12 +1,17 @@
-'use client';
-
 import IlustrationImage from '@/assets/images/illustration.png';
 import Feature from '@/components/feature';
 import { Button } from '@/components/ui/button';
 import { BookOpenIcon, FingerprintIcon, GlobeIcon, ShieldCheckIcon, UsersIcon, WalletIcon } from 'lucide-react';
+import { Metadata } from 'next';
 import Image from 'next/image';
 
-export default function Welcome() {
+export const metadata: Metadata = {
+    title: 'Homepage',
+    description:
+        'Join DeVote — a blockchain-powered voting app enabling secure, anonymous, and global participation in digital elections.',
+};
+
+export default function Homepage() {
     return (
         <section className="relative pt-32 pb-40 overflow-hidden px-6 transition-colors duration-300 bg-white text-black dark:bg-transparent dark:text-white">
             {/* Background gradients hanya untuk dark mode */}
