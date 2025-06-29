@@ -3,18 +3,18 @@
 import { Button } from '@/components/ui/button';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { cn } from '@/lib/utils';
-import type { SidebarItem } from '@/types';
+import type { NavItem } from '@/types';
 import { Icon } from '@iconify/react';
 import { ChevronDown } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-interface SidebarGroupContentProps {
-    item: SidebarItem;
+interface GroupContentProps {
+    item: NavItem;
 }
 
-const SidebarGroupContent: React.FC<SidebarGroupContentProps> = ({ item }) => {
+const GroupContent: React.FC<GroupContentProps> = ({ item }) => {
     const [isOpen, setIsOpen] = useState(false);
     const pathname = usePathname();
 
@@ -27,11 +27,12 @@ const SidebarGroupContent: React.FC<SidebarGroupContentProps> = ({ item }) => {
     return (
         <Collapsible open={isOpen} onOpenChange={setIsOpen}>
             <CollapsibleTrigger asChild>
-                <Button variant="ghost" className="flex w-full items-center justify-between px-4 py-6">
-                    <div className="flex min-w-0 items-center gap-x-3 px-3">
-                        <Icon icon={item.icon} />
-                        <span className="truncate">{item.title}</span>
+                <Button variant="ghost" className="flex w-full items-center justify-between px-4 py-6 cursor-pointer">
+                    <div className="flex min-w-0 items-center gap-x-3 px-0.5">
+                        {item.icon && <Icon icon={item.icon} />}
+                        <span className="truncate font-normal">{item.title}</span>
                     </div>
+
                     <ChevronDown className={cn('h-4 w-4 flex-shrink-0 transition-transform', isOpen && 'rotate-180')} />
                 </Button>
             </CollapsibleTrigger>
@@ -48,7 +49,7 @@ const SidebarGroupContent: React.FC<SidebarGroupContentProps> = ({ item }) => {
                                 : 'text-black dark:text-white',
                         )}
                     >
-                        <span className="h-1 w-1 flex-shrink-0 rounded-full bg-gray-500" />
+                        <span className="h-1 w-1 flex-shrink-0 rounded-full bg-gray-500 " />
                         <span className="truncate">{subItem.title}</span>
                     </Link>
                 ))}
@@ -57,4 +58,4 @@ const SidebarGroupContent: React.FC<SidebarGroupContentProps> = ({ item }) => {
     );
 };
 
-export default SidebarGroupContent;
+export default GroupContent;

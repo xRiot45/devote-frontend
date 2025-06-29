@@ -1,15 +1,10 @@
 'use client';
 
 import { cn } from '@/lib/utils';
+import { NavItem } from '@/types';
 import { Icon } from '@iconify/react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-
-interface NavItem {
-    title: string;
-    href: string;
-    icon: string;
-}
 
 interface NavMainProps {
     items: NavItem[];
@@ -19,7 +14,7 @@ const NavMain: React.FC<NavMainProps> = ({ items }) => {
     const pathname = usePathname();
 
     return (
-        <>
+        <div>
             {items.map((item) => (
                 <Link
                     key={item.href}
@@ -31,11 +26,11 @@ const NavMain: React.FC<NavMainProps> = ({ items }) => {
                             : 'text-black dark:text-white',
                     )}
                 >
-                    <Icon icon={item.icon} />
+                    {item.icon && <Icon icon={item.icon} />}
                     <span className="truncate text-md">{item.title}</span>
                 </Link>
             ))}
-        </>
+        </div>
     );
 };
 

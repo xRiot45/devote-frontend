@@ -11,7 +11,7 @@ export interface NavGroup {
 export interface NavItem {
     title: string;
     href: string;
-    icon: string;
+    icon?: string;
     isActive?: boolean;
     submenu?: NavItem[];
 }

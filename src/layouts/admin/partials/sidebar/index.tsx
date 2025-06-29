@@ -3,7 +3,6 @@
 import {
     Sidebar,
     SidebarContent,
-    SidebarFooter,
     SidebarGroup,
     SidebarGroupLabel,
     SidebarHeader,
@@ -12,17 +11,21 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import Link from 'next/link';
+import GroupContent from './components/group-content';
 import NavMain from './components/nav-main';
-import SidebarGroupContent from './components/sidebar-group-content';
 import mainNavItems from './main-nav-items';
 
-export function SidebarAdmin() {
+export default function SidebarAdmin() {
     return (
         <Sidebar collapsible="offcanvas" variant="inset" className="bg-white dark:bg-black border-r">
-            <SidebarHeader className="dark:bg-black hover:bg-none">
+            <SidebarHeader className="dark:bg-black">
                 <SidebarMenu>
                     <SidebarMenuItem>
-                        <SidebarMenuButton asChild size="lg" className="dark:bg-black hover:bg-none">
+                        <SidebarMenuButton
+                            asChild
+                            size="lg"
+                            className="bg-transparent hover:bg-transparent dark:bg-black"
+                        >
                             <div className="text-xl font-bold tracking-tight">
                                 <Link
                                     href="/admin/dashboard"
@@ -36,14 +39,14 @@ export function SidebarAdmin() {
                 </SidebarMenu>
             </SidebarHeader>
 
-            <SidebarContent className="bg-white dark:bg-black px-2">
+            <SidebarContent className="bg-white dark:bg-black px-2 ">
                 {mainNavItems.map(({ group, items }) => (
                     <SidebarGroup key={group || 'no-group'}>
                         {group && <SidebarGroupLabel>{group}</SidebarGroupLabel>}
-                        <SidebarMenu>
+                        <SidebarMenu className="space-y-1.5">
                             {items.map((item) =>
                                 item.submenu ? (
-                                    <SidebarGroupContent key={`${group}-${item.title}`} item={item} />
+                                    <GroupContent key={`${group}-${item.title}`} item={item} />
                                 ) : (
                                     <NavMain key={`${group}-${item.title}`} items={[item]} />
                                 ),
@@ -52,10 +55,6 @@ export function SidebarAdmin() {
                     </SidebarGroup>
                 ))}
             </SidebarContent>
-
-            <SidebarFooter className="dark:bg-black">
-                <h1 className="px-4 py-2 text-sm text-muted-foreground">Admin</h1>
-            </SidebarFooter>
         </Sidebar>
     );
 }

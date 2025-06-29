@@ -9,7 +9,11 @@ import { SidebarTrigger } from '@/components/ui/sidebar';
 import { BreadcrumbItem } from '@/types';
 import { Bell } from 'lucide-react';
 
-export function SidebarHeader({ breadcrumbs = [] }: { breadcrumbs?: BreadcrumbItem[] }) {
+interface HeaderProps {
+    breadcrumbs?: BreadcrumbItem[];
+}
+
+const Header: React.FC<HeaderProps> = ({ breadcrumbs = [] }) => {
     return (
         <header className=" flex h-16 items-center px-6 md:px-4 bg-white dark:bg-black transition-colors z-50">
             <div className="flex items-center justify-between w-full gap-4">
@@ -56,4 +60,6 @@ export function SidebarHeader({ breadcrumbs = [] }: { breadcrumbs?: BreadcrumbIt
             </div>
         </header>
     );
-}
+};
+
+export default Header;

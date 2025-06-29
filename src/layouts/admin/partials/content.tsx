@@ -5,7 +5,7 @@ interface AppContentProps extends React.ComponentProps<'main'> {
     variant?: 'header' | 'sidebar';
 }
 
-export function Content({ variant = 'header', children, ...props }: AppContentProps) {
+export default function Content({ variant = 'header', children, ...props }: AppContentProps) {
     if (variant === 'sidebar') {
         return <SidebarInset {...props}>{children}</SidebarInset>;
     }

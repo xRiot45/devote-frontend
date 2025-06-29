@@ -8,7 +8,7 @@ interface AppShellProps {
     variant?: 'header' | 'sidebar';
 }
 
-export function Shell({ children, variant = 'header' }: AppShellProps) {
+export default function Shell({ children, variant = 'header' }: AppShellProps) {
     const [isOpen, setIsOpen] = useState(() =>
         typeof window !== 'undefined' ? localStorage.getItem('sidebar') !== 'false' : true,
     );

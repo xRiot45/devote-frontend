@@ -1,8 +1,8 @@
 import type { BreadcrumbItem } from '@/types';
-import { Content } from './partials/content';
-import { Shell } from './partials/shell';
-import { SidebarAdmin } from './partials/sidebar/sidebar';
-import { SidebarHeader } from './partials/sidebar/sidebar-header';
+import Content from './partials/content';
+import Shell from './partials/shell';
+import SidebarAdmin from './partials/sidebar';
+import Header from './partials/sidebar/components/header';
 
 interface AdminLayoutProps {
     children: React.ReactNode;
@@ -14,7 +14,7 @@ export default function AdminLayout({ children, breadcrumbs = [] }: AdminLayoutP
         <Shell variant="sidebar">
             <SidebarAdmin />
             <Content variant="sidebar">
-                <SidebarHeader breadcrumbs={breadcrumbs} />
+                <Header breadcrumbs={breadcrumbs} />
                 {children}
             </Content>
         </Shell>
