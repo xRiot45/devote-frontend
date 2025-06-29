@@ -1,6 +1,12 @@
+import { BreadcrumbProvider } from '@/contexts/breadcrumb-context';
 import AdminLayout from '@/layouts/admin';
+import { BreadcrumbItem } from '@/types';
 import { Poppins } from 'next/font/google';
 import '../globals.css';
+
+interface AdminPageLayoutProps {
+    children: React.ReactElement & { props: { breadcrumbs?: BreadcrumbItem[] } };
+}
 
 const poppins = Poppins({
     variable: '--font-sans',
@@ -9,10 +15,12 @@ const poppins = Poppins({
     display: 'swap',
 });
 
-export default function AdminPageLayout({ children }: { children: React.ReactNode }) {
+export default function AdminPageLayout({ children }: AdminPageLayoutProps) {
     return (
         <div className={`${poppins.variable} antialiased`}>
-            <AdminLayout>{children}</AdminLayout>
+            <BreadcrumbProvider>
+                <AdminLayout>{children}</AdminLayout>
+            </BreadcrumbProvider>
         </div>
     );
 }
