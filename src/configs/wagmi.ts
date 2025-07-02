@@ -29,5 +29,5 @@ export const wagmiConfig = getDefaultConfig({
     appName: 'DeVote',
     projectId: '9670ba1a696d0be0a6e74ebc95df9c8d',
     chains: [hardhatChain, mainnet, polygon, optimism, arbitrum, base, sepolia],
-    ssr: false,
+    ssr: true,
 });
