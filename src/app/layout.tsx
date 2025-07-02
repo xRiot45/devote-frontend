@@ -1,3 +1,4 @@
+import { Web3Provider } from '@/providers/web3-provider';
 import type { Metadata } from 'next';
 import { Poppins } from 'next/font/google';
 import './globals.css';
@@ -22,7 +23,9 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
-            <body className={`${poppins.variable} antialiased`}>{children}</body>
+            <body className={`${poppins.variable} antialiased`}>
+                <Web3Provider>{children}</Web3Provider>
+            </body>
         </html>
     );
 }
