@@ -62,7 +62,7 @@ export default function Homepage() {
                                 <Button
                                     variant="outline"
                                     size="lg"
-                                    className="border border-black/10 dark:border-white/30 text-black dark:text-white hover:bg-muted transition-colors py-6 shadow-none cursor-pointer"
+                                    className="border border-black/10 dark:border-white/30 text-black dark:text-white hover:bg-muted transition-colors py-6 shadow-none cursor-pointer w-full"
                                 >
                                     <BookOpenIcon className="w-5 h-5 mr-2" />
                                     Learn More

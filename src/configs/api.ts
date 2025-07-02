@@ -3,7 +3,7 @@ import Cookies from 'js-cookie';
 import router from 'next/router';
 
 const api = axios.create({
-    baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api',
+    baseURL: process.env.NEXT_PUBLIC_API_URL,
     timeout: 10000,
     headers: {
         'Content-Type': 'application/json',
@@ -41,3 +41,5 @@ api.interceptors.response.use(
         return Promise.reject(error);
     },
 );
+
+export default api;

@@ -12,26 +12,60 @@ import {
     AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
+import { useCheckWalletAddress } from '@/hooks/auth/useCheckWalletAddress';
+import { loginWithWallet } from '@/services/authService';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { LogOutIcon, WalletIcon } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import { useAccount, useDisconnect } from 'wagmi';
 
 const ConnectWalletButton: React.FC = () => {
+    const router = useRouter();
     const { openConnectModal } = useConnectModal();
-    const { isConnected } = useAccount();
+    const { isConnected, address } = useAccount();
     const { disconnect } = useDisconnect();
+
+    const { mutate: checkWallet, isPending } = useCheckWalletAddress();
+
+    const [shouldCheckWallet, setShouldCheckWallet] = useState<boolean>(false);
+
+    useEffect(() => {
+        if (shouldCheckWallet && isConnected && address) {
+            checkWallet(address, {
+                onSuccess: async (res) => {
+                    if (res.isRegistered) {
+                        const result = await loginWithWallet({
+                            walletAddress: address,
+                        });
+
+                        localStorage.setItem('accessToken', result.accessToken);
+                        router.push('/admin/dashboard');
+                    } else {
+                        router.push('/auth/step-1');
+                    }
+                },
+                onError: () => {
+                    disconnect();
+                },
+            });
+        }
+    }, [isConnected, address, checkWallet, disconnect, router, shouldCheckWallet]);
 
     return (
         <div className="flex flex-col sm:flex-row gap-4">
             {!isConnected ? (
                 <Button
-                    onClick={() => openConnectModal?.()}
+                    onClick={() => {
+                        setShouldCheckWallet(true);
+                        openConnectModal?.();
+                    }}
                     variant="default"
                     size="lg"
                     className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white hover:from-indigo-600 hover:to-purple-700 transition-all py-6 cursor-pointer"
                 >
                     <WalletIcon className="w-5 h-5 mr-2" />
-                    Connect To Wallet
+                    {isPending ? 'Connecting...' : 'Connect Wallet'}
                 </Button>
             ) : (
                 <div className="flex flex-col sm:flex-row gap-4">
