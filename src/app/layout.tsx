@@ -1,6 +1,7 @@
 import { Web3Provider } from '@/providers/web3-provider';
 import type { Metadata } from 'next';
 import { Poppins } from 'next/font/google';
+import { Toaster } from 'sonner';
 import './globals.css';
 
 const poppins = Poppins({
@@ -22,9 +23,12 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en">
+        <html lang="en" className="dark">
             <body className={`${poppins.variable} antialiased`}>
-                <Web3Provider>{children}</Web3Provider>
+                <Web3Provider>
+                    {children}
+                    <Toaster />
+                </Web3Provider>
             </body>
         </html>
     );
