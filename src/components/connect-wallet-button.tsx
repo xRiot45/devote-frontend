@@ -42,17 +42,21 @@ const ConnectWalletButton: React.FC = () => {
                                 Disconnect Wallet
                             </Button>
                         </AlertDialogTrigger>
-                        <AlertDialogContent>
+                        <AlertDialogContent className="dark:bg-gradient-to-br dark:from-[#0f051d] dark:via-[#1c0533] dark:to-[#120422] dark:text-white border-none">
                             <AlertDialogHeader>
                                 <AlertDialogTitle>Disconnect Wallet?</AlertDialogTitle>
                                 <AlertDialogDescription>
-                                    Setelah logout, kamu harus menyambungkan wallet kamu kembali untuk melakukan
-                                    transaksi.
+                                    After logging out, you will need to reconnect your wallet to make transactions.
                                 </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>
-                                <AlertDialogCancel>Batal</AlertDialogCancel>
-                                <AlertDialogAction onClick={() => disconnect()}>Disconnect</AlertDialogAction>
+                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                <AlertDialogAction
+                                    onClick={() => disconnect()}
+                                    className="bg-red-500 text-white cursor-pointer hover:bg-red-700"
+                                >
+                                    Disconnect
+                                </AlertDialogAction>
                             </AlertDialogFooter>
                         </AlertDialogContent>
                     </AlertDialog>
