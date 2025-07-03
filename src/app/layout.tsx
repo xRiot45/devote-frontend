@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import { Poppins } from 'next/font/google';
 import { Toaster } from 'sonner';
 import './globals.css';
+import { ThemeProvider } from '@/providers/theme-provider';
 
 const poppins = Poppins({
     variable: '--font-sans',
@@ -25,10 +26,12 @@ export default function RootLayout({
     return (
         <html lang="en" className="dark">
             <body className={`${poppins.variable} antialiased`}>
-                <Web3Provider>
-                    {children}
-                    <Toaster />
-                </Web3Provider>
+                <ThemeProvider>
+                    <Web3Provider>
+                        {children}
+                        <Toaster />
+                    </Web3Provider>
+                </ThemeProvider>
             </body>
         </html>
     );

@@ -3,9 +3,13 @@
 import authStep2Image from '@/assets/images/auth/auth-step-2.png'; // Ganti sesuai path gambar kamu
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { StepForwardIcon } from 'lucide-react';
+import { Label } from '@/components/ui/label';
+import Stepper from '@/components/ui/stepper';
+import { Icon } from '@iconify/react';
 import Image from 'next/image';
 import { useState } from 'react';
+
+const steps = [{ label: 'Name' }, { label: 'Email' }];
 
 export default function Step2Page() {
     const [email, setEmail] = useState('');
@@ -39,6 +43,9 @@ export default function Step2Page() {
 
                     {/* Form Section */}
                     <div className="order-2 md:order-1">
+                        {/* Stepper */}
+                        <Stepper steps={steps} currentStep={2} />
+
                         <h2 className="text-sm uppercase tracking-widest font-semibold">Step 2</h2>
                         <h1 className="mt-3 text-4xl sm:text-5xl font-extrabold leading-tight tracking-tight">
                             Enter your{' '}
@@ -46,26 +53,30 @@ export default function Step2Page() {
                                 Email
                             </span>
                         </h1>
-                        <p className="mt-6 text-lg text-muted-foreground max-w-xl">
-                            We’ll use this email to contact you and verify your identity.
-                        </p>
+                        <div className="mt-4 flex items-start gap-2 text-muted-foreground text-base max-w-xl">
+                            <span> We’ll use this email to contact you and verify your identity.</span>
+                        </div>
 
                         {/* Input Form */}
                         <div className="mt-8 space-y-4 max-w-md">
-                            <Input
-                                type="email"
-                                placeholder="Enter your email address"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                className="py-6 text-base"
-                            />
+                            <div className="space-y-2.5">
+                                <Label htmlFor="email">Email Address</Label>
+                                <Input
+                                    type="email"
+                                    placeholder="Enter your email address"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    className="py-6 text-base shadow-none"
+                                />
+                            </div>
+
                             <Button
                                 size="lg"
-                                className="w-full bg-purple-600 hover:bg-purple-700 text-white py-6"
+                                className="bg-gradient-to-r from-indigo-500 cursor-pointer to-purple-600 text-white hover:from-indigo-600 hover:to-purple-700 transition py-6 w-full"
                                 onClick={handleNext}
                             >
-                                Next Step
-                                <StepForwardIcon className="w-4 h-4 ml-2" />
+                                Complete Registration
+                                <Icon icon={'fluent-mdl2:completed-solid'} className="ml-2" />
                             </Button>
                         </div>
                     </div>
