@@ -2,7 +2,11 @@ import api from '@/configs/api';
 import type { CheckWalletAddressResponse, WalletAuthPayload, WalletAuthResponse } from '@/interfaces/auth';
 
 export async function checkWalletAddress(walletAddress: string): Promise<CheckWalletAddressResponse> {
-    const response = await api.post('/auth/wallet/check', { walletAddress });
+    const response = await api.get('/auth/wallet/check', {
+        params: { walletAddress },
+    });
+
+    console.log(response);
     return response.data;
 }
 

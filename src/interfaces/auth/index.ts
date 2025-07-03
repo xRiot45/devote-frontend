@@ -11,5 +11,9 @@ export interface WalletAuthResponse {
 }
 
 export interface CheckWalletAddressResponse {
-    isRegistered: boolean;
+    success: boolean;
+    message: string;
+    data: {
+        isRegistered: boolean;
+    };
 }

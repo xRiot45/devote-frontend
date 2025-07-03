@@ -2,21 +2,45 @@
 
 import authStep1Image from '@/assets/images/auth/auth-step-1.png';
 import { Button } from '@/components/ui/button';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import Stepper from '@/components/ui/stepper';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { StepForwardIcon } from 'lucide-react';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 
 const steps = [{ label: 'Name' }, { label: 'Email' }];
 
-export default function AuthStep1() {
-    const [name, setName] = useState('');
+const validationSchema = z.object({
+    name: z.string().min(1, {
+        message: 'Name is required',
+    }),
+});
 
-    const handleNext = () => {
-        if (!name) return alert('Please enter your name');
-        console.log('Next step with name:', name);
+export default function AuthStep1() {
+    const router = useRouter();
+    const form = useForm<z.infer<typeof validationSchema>>({
+        resolver: zodResolver(validationSchema),
+        mode: 'onChange',
+        defaultValues: {
+            name: '',
+        },
+    });
+
+    useEffect(() => {
+        const storedName = localStorage.getItem('name');
+        if (storedName) {
+            form.setValue('name', storedName);
+        }
+    }, [form]);
+
+    const handleNext = (values: z.infer<typeof validationSchema>) => {
+        localStorage.setItem('name', values.name);
+        router.push('/auth/step-2');
     };
 
     return (
@@ -28,7 +52,6 @@ export default function AuthStep1() {
 
                 {/* Content */}
                 <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-14 items-center max-w-7xl mx-auto">
-                    {/* Illustration */}
                     <div className="order-1 md:order-2 flex justify-center">
                         <Image
                             src={authStep1Image}
@@ -39,7 +62,6 @@ export default function AuthStep1() {
 
                     {/* Form Section */}
                     <div className="order-2 md:order-1">
-                        {/* Stepper */}
                         <Stepper steps={steps} currentStep={1} />
 
                         {/* Heading */}
@@ -54,28 +76,41 @@ export default function AuthStep1() {
                             <span>We’d like to know your name before continuing to the next step.</span>
                         </div>
 
-                        {/* Input Form */}
                         <div className="mt-8 space-y-4 max-w-md">
-                            <div className="space-y-2.5">
-                                <Label htmlFor="name">Full Name</Label>
-                                <Input
-                                    id="name"
-                                    type="text"
-                                    placeholder="e.g. John Doe"
-                                    value={name}
-                                    onChange={(e) => setName(e.target.value)}
-                                    className="py-6 text-base shadow-none"
-                                />
-                            </div>
-
-                            <Button
-                                size="lg"
-                                className="bg-gradient-to-r from-indigo-500 cursor-pointer to-purple-600 text-white hover:from-indigo-600 hover:to-purple-700 transition py-6 w-full"
-                                onClick={handleNext}
-                            >
-                                Next Step
-                                <StepForwardIcon className="w-4 h-4 ml-2" />
-                            </Button>
+                            <Form {...form}>
+                                <form onSubmit={form.handleSubmit(handleNext)} className="space-y-4">
+                                    <FormField
+                                        control={form.control}
+                                        name="name"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>Full Name</FormLabel>
+                                                <FormControl>
+                                                    <Input
+                                                        id="name"
+                                                        type="text"
+                                                        placeholder="e.g. John Doe"
+                                                        {...field}
+                                                        className={`py-6  text-base shadow-none ${
+                                                            form.formState.errors.name
+                                                                ? 'border-red-500 focus-visible:ring-red-500'
+                                                                : ''
+                                                        }`}
+                                                    />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                    <Button
+                                        size="lg"
+                                        className="bg-gradient-to-r from-indigo-500 cursor-pointer to-purple-600 text-white hover:from-indigo-600 hover:to-purple-700 transition py-6 w-full"
+                                    >
+                                        Next Step
+                                        <StepForwardIcon className="w-4 h-4 ml-2" />
+                                    </Button>
+                                </form>
+                            </Form>
                         </div>
                     </div>
                 </div>

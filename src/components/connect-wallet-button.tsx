@@ -18,6 +18,7 @@ import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { LogOutIcon, WalletIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 import { useAccount, useDisconnect } from 'wagmi';
 
 const ConnectWalletButton: React.FC = () => {
@@ -34,14 +35,19 @@ const ConnectWalletButton: React.FC = () => {
         if (shouldCheckWallet && isConnected && address) {
             checkWallet(address, {
                 onSuccess: async (res) => {
-                    if (res.isRegistered) {
+                    if (res?.data.isRegistered) {
                         const result = await loginWithWallet({
                             walletAddress: address,
                         });
 
+                        toast.success('Success', {
+                            description: 'Login successfully!',
+                        });
+
                         localStorage.setItem('accessToken', result.accessToken);
-                        router.push('/admin/dashboard');
+                        router.push('/');
                     } else {
+                        localStorage.setItem('walletAddress', address);
                         router.push('/auth/step-1');
                     }
                 },
