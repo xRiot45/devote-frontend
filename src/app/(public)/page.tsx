@@ -4,6 +4,7 @@ import IlustrationImage from '@/assets/images/illustration.png';
 import ConnectWalletButton from '@/components/connect-wallet-button';
 import Feature from '@/components/feature';
 import { Button } from '@/components/ui/button';
+import { Icon } from '@iconify/react';
 import { BookOpenIcon, FingerprintIcon, GlobeIcon, ShieldCheckIcon, UsersIcon } from 'lucide-react';
 import Head from 'next/head';
 import Image from 'next/image';
@@ -58,16 +59,28 @@ export default function Homepage() {
                         {/* Buttons */}
                         <div className="mt-8 flex flex-col sm:flex-row gap-4">
                             <ConnectWalletButton />
-                            <Link href="/about">
-                                <Button
-                                    variant="outline"
-                                    size="lg"
-                                    className="border border-black/10 dark:border-white/30 text-black dark:text-white hover:bg-muted transition-colors py-6 shadow-none cursor-pointer w-full"
-                                >
-                                    <BookOpenIcon className="w-5 h-5 mr-2" />
-                                    Learn More
-                                </Button>
-                            </Link>
+                            {address ? (
+                                <Link href="/vote">
+                                    <Button
+                                        size="lg"
+                                        className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white hover:from-indigo-600 hover:to-purple-700 transition-all py-6 cursor-pointer"
+                                    >
+                                        <Icon icon="mdi:vote" />
+                                        Vote Now
+                                    </Button>
+                                </Link>
+                            ) : (
+                                <Link href="/about">
+                                    <Button
+                                        variant="outline"
+                                        size="lg"
+                                        className="border border-black/10 dark:border-white/30 text-black dark:text-white hover:bg-muted transition-colors py-6 shadow-none cursor-pointer w-full"
+                                    >
+                                        <BookOpenIcon className="w-5 h-5 mr-2" />
+                                        Learn More
+                                    </Button>
+                                </Link>
+                            )}
                         </div>
 
                         <p className="mt-4 text-sm text-muted-foreground">
