@@ -27,14 +27,15 @@ export function DataTableRowActions({ row }: { row: Row<User> }) {
     return (
         <>
             <DropdownMenu>
-                <DropdownMenuTrigger>
+                <DropdownMenuTrigger asChild>
                     <Button variant="ghost" className="data-[state=open]:bg-muted flex h-8 w-8 p-0">
                         <Icon icon="tabler:dots" />
                         <span className="sr-only">Open menu</span>
                     </Button>
                 </DropdownMenuTrigger>
+
                 <DropdownMenuContent align="end" className="w-[160px]">
-                    <Link href={`/admin/users-management/${row.original.id}`}>
+                    <Link href={`/admin/users-management/${row.original.id}`} passHref>
                         <DropdownMenuItem className="cursor-pointer">
                             Edit Data
                             <DropdownMenuShortcut>
@@ -42,7 +43,9 @@ export function DataTableRowActions({ row }: { row: Row<User> }) {
                             </DropdownMenuShortcut>
                         </DropdownMenuItem>
                     </Link>
+
                     <DropdownMenuSeparator />
+
                     <AlertDialog>
                         <AlertDialogTrigger asChild>
                             <DropdownMenuItem
@@ -55,15 +58,17 @@ export function DataTableRowActions({ row }: { row: Row<User> }) {
                                 </DropdownMenuShortcut>
                             </DropdownMenuItem>
                         </AlertDialogTrigger>
+
                         <AlertDialogContent>
                             <AlertDialogHeader>
                                 <AlertDialogTitle>Delete User!</AlertDialogTitle>
                                 <AlertDialogDescription>
-                                    Are You Sure You Want to Delete This User?
+                                    Are you sure you want to delete this user?
                                 </AlertDialogDescription>
                             </AlertDialogHeader>
+
                             <AlertDialogFooter>
-                                <AlertDialogCancel className="cursor-pointer">Batal</AlertDialogCancel>
+                                <AlertDialogCancel className="cursor-pointer">Cancel</AlertDialogCancel>
                                 <AlertDialogAction className="cursor-pointer bg-red-600 transition-all">
                                     Delete
                                 </AlertDialogAction>

@@ -1,34 +1,35 @@
-import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-} from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { DataTableToolbarProps } from '@/types/tanstack';
 import { Icon } from '@iconify/react';
-import { useState } from 'react';
 
 export function DataTableToolbar<TData>({ table }: DataTableToolbarProps<TData>) {
     const isFiltered = table.getState().columnFilters.length > 0;
-    const isAllSelected = table.getIsAllPageRowsSelected();
-
-    const [open, setOpen] = useState<boolean>(false);
 
     return (
         <div className="flex items-center justify-between">
-            <div className="flex flex-1 flex-col-reverse items-start gap-y-2 sm:flex-row sm:items-center sm:space-x-2">
+            <div className="flex flex-1 flex-col-reverse items-start gap-y-2 sm:flex-row sm:items-center sm:space-x-3">
                 <Input
-                    placeholder="Cari nama role..."
+                    placeholder="Search wallet address..."
+                    value={(table.getColumn('walletAddress')?.getFilterValue() as string) ?? ''}
+                    onChange={(event) => table.getColumn('walletAddress')?.setFilterValue(event.target.value)}
+                    className="h-10 rounded-md shadow-none w-[150px] lg:w-[300px]"
+                />
+
+                <Input
+                    placeholder="Search name..."
                     value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
                     onChange={(event) => table.getColumn('name')?.setFilterValue(event.target.value)}
-                    className="h-8 w-[150px] lg:w-[250px]"
+                    className="h-10 rounded-md shadow-none w-[150px] lg:w-[300px]"
                 />
+
+                <Input
+                    placeholder="Search email..."
+                    value={(table.getColumn('email')?.getFilterValue() as string) ?? ''}
+                    onChange={(event) => table.getColumn('email')?.setFilterValue(event.target.value)}
+                    className="h-10 rounded-md shadow-none w-[150px] lg:w-[300px]"
+                />
+
                 {isFiltered && (
                     <Button
                         variant="ghost"
@@ -40,35 +41,6 @@ export function DataTableToolbar<TData>({ table }: DataTableToolbarProps<TData>)
                     </Button>
                 )}
             </div>
-
-            {isAllSelected && (
-                <div>
-                    <Button
-                        variant="outline"
-                        onClick={() => setOpen(true)}
-                        className="h-8 cursor-pointer border border-red-500 px-2 text-red-500 hover:bg-transparent lg:px-3"
-                    >
-                        Hapus semua data
-                        <Icon icon={'material-symbols:delete'} className="h-4 w-4" />
-                    </Button>
-                    <AlertDialog open={open} onOpenChange={setOpen}>
-                        <AlertDialogContent>
-                            <AlertDialogHeader>
-                                <AlertDialogTitle>Hapus Data</AlertDialogTitle>
-                                <AlertDialogDescription>
-                                    Apakah Kamu Yakin Ingin Menghapus Semua Data?
-                                </AlertDialogDescription>
-                            </AlertDialogHeader>
-                            <AlertDialogFooter>
-                                <AlertDialogCancel className="cursor-pointer">Batal</AlertDialogCancel>
-                                <AlertDialogAction className="cursor-pointer bg-red-600 transition-all">
-                                    Hapus
-                                </AlertDialogAction>
-                            </AlertDialogFooter>
-                        </AlertDialogContent>
-                    </AlertDialog>
-                </div>
-            )}
         </div>
     );
 }

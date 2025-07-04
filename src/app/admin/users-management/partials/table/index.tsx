@@ -18,7 +18,7 @@ import { useState } from 'react';
 import { DataTablePagination } from './components/data-table-pagination';
 import { DataTableToolbar } from './components/data-table-toolbar';
 
-export default function RoleTable({ columns, data }: DataTableProps<User>) {
+export default function UsersManagementTable({ columns, data }: DataTableProps<User>) {
     const [rowSelection, setRowSelection] = useState({});
     const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
