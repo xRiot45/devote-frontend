@@ -54,7 +54,7 @@ export default function DetailVote() {
                 ) : isError || !proposal ? (
                     <p className="text-red-500 text-center">Failed to load proposal data.</p>
                 ) : (
-                    <Card className="bg-white/10 dark:bg-zinc-900/40 border border-white/10 backdrop-blur-md rounded-2xl shadow-xl">
+                    <Card className="bg-white/10 dark:bg-zinc-900/40 border  backdrop-blur-md rounded-2xl">
                         <CardContent className="p-8 space-y-8">
                             {/* Proposal Summary */}
                             <div className="flex flex-col sm:flex-row justify-between gap-4 sm:items-center">
@@ -118,7 +118,7 @@ export default function DetailVote() {
                                                 <DialogTrigger asChild>
                                                     <Card
                                                         onClick={() => setSelectedOption(option)}
-                                                        className="bg-white/5 border border-white/10 rounded-xl cursor-pointer transition hover:scale-[1.02] shadow-md hover:shadow-lg"
+                                                        className="bg-white/5 border  rounded-xl cursor-pointer transition hover:scale-[1.02] shadow-none"
                                                     >
                                                         <CardContent className="flex gap-4 items-center p-4">
                                                             <div className="w-16 h-16 relative rounded-full overflow-hidden border border-zinc-800">
@@ -130,7 +130,7 @@ export default function DetailVote() {
                                                                 />
                                                             </div>
                                                             <div>
-                                                                <h4 className="text-lg font-semibold text-white">
+                                                                <h4 className="text-lg font-semibold dark:text-white">
                                                                     {option.label}
                                                                 </h4>
                                                                 <p className="text-sm text-muted-foreground line-clamp-2">
@@ -160,7 +160,7 @@ export default function DetailVote() {
                                                                     className="object-cover"
                                                                 />
                                                             </div>
-                                                            <h3 className="text-xl font-bold text-white">
+                                                            <h3 className="text-xl font-bold dark:text-white">
                                                                 {selectedOption.label}
                                                             </h3>
                                                             <p className="text-base text-muted-foreground leading-relaxed">

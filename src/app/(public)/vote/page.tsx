@@ -26,7 +26,7 @@ export default function VotePage() {
                 <div className="relative z-10 max-w-7xl mx-auto">
                     {/* Header */}
                     <div className="mb-14 text-center">
-                        <h1 className="mt-3 text-5xl sm:text-5xl md:text-6xl font-extrabold leading-tight tracking-tight">
+                        <h1 className="mt-3 text-5xl font-extrabold leading-tight tracking-tight">
                             Voting Proposal{' '}
                             <span className="bg-gradient-to-r from-indigo-400 to-purple-500 text-transparent bg-clip-text">
                                 Available
@@ -50,7 +50,10 @@ export default function VotePage() {
                     ) : (
                         <div className="grid grid-cols-1 md:grid-cols-2  gap-8">
                             {proposals?.map((proposal) => (
-                                <Link key={proposal.id} href={`/vote/${proposal.id}`}>
+                                <Link
+                                    key={proposal.id}
+                                    href={proposal?.status === StatusEnum.ACTIVE ? `/vote/${proposal.id}` : ''}
+                                >
                                     <Card className="bg-white/10 dark:bg-zinc-900/20 border-border backdrop-blur-md hover:shadow-indigo-500/30 transition-all duration-300 rounded-2xl overflow-hidden group">
                                         <CardContent className="p-6 space-y-6">
                                             {/* Header */}
