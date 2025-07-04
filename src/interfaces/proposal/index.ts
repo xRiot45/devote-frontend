@@ -2,6 +2,8 @@ export interface ProposalOption {
     id: number;
     label: string;
     image: string;
+    order: number;
+    description: string;
 }
 
 export interface Proposal {

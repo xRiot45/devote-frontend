@@ -50,7 +50,7 @@ export default function VotePage() {
                     ) : (
                         <div className="grid grid-cols-1 md:grid-cols-2  gap-8">
                             {proposals?.map((proposal) => (
-                                <Link key={proposal.id} href={`/proposals/${proposal.id}`}>
+                                <Link key={proposal.id} href={`/vote/${proposal.id}`}>
                                     <Card className="bg-white/10 dark:bg-zinc-900/20 border-border backdrop-blur-md hover:shadow-indigo-500/30 transition-all duration-300 rounded-2xl overflow-hidden group">
                                         <CardContent className="p-6 space-y-6">
                                             {/* Header */}
