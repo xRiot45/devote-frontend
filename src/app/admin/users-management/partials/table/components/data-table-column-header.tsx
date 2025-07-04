@@ -28,7 +28,7 @@ export function DataTableColumnHeader<TData, TValue>({
     return (
         <div className={cn('flex items-center space-x-2', className)}>
             <DropdownMenu>
-                <DropdownMenuTrigger>
+                <DropdownMenuTrigger asChild>
                     <Button variant="ghost" size="sm" className="data-[state=open]:bg-accent -ml-3 h-8">
                         <span className="text-md font-medium text-gray-900 dark:text-gray-200">{title}</span>
                         {column.getIsSorted() === 'desc' ? (
@@ -40,19 +40,22 @@ export function DataTableColumnHeader<TData, TValue>({
                         )}
                     </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="start">
-                    <DropdownMenuItem onClick={() => column.toggleSorting(false)}>
+                <DropdownMenuContent align="start" className="w-52 shadow-none">
+                    <DropdownMenuItem onClick={() => column.toggleSorting(false)} className="p-3 cursor-pointer">
                         <Icon icon="tabler:arrow-up" className="text-muted-foreground/70 mr-2 h-3.5 w-3.5" />
                         Asc
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => column.toggleSorting(true)}>
+                    <DropdownMenuItem onClick={() => column.toggleSorting(true)} className="p-3 cursor-pointer">
                         <Icon icon="tabler:arrow-down" className="text-muted-foreground/70 mr-2 h-3.5 w-3.5" />
                         Desc
                     </DropdownMenuItem>
                     {column.getCanHide() && (
                         <>
                             <DropdownMenuSeparator />
-                            <DropdownMenuItem onClick={() => column.toggleVisibility(false)}>
+                            <DropdownMenuItem
+                                onClick={() => column.toggleVisibility(false)}
+                                className="p-3 cursor-pointer"
+                            >
                                 <Icon icon="tabler:eye-off" className="text-muted-foreground/70 mr-2 h-3.5 w-3.5" />
                                 Hide
                             </DropdownMenuItem>
