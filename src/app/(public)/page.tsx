@@ -63,7 +63,7 @@ export default function Homepage() {
                                 <Link href="/vote">
                                     <Button
                                         size="lg"
-                                        className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white hover:from-indigo-600 hover:to-purple-700 transition-all py-6 cursor-pointer"
+                                        className="bg-gradient-to-r w-full from-indigo-500 to-purple-600 text-white hover:from-indigo-600 hover:to-purple-700 transition-all py-6 cursor-pointer"
                                     >
                                         <Icon icon="mdi:vote" />
                                         Vote Now

@@ -5,9 +5,11 @@ export interface WalletAuthPayload {
 }
 
 export interface WalletAuthResponse {
-    accessToken: string;
-    refreshToken: string;
-    isNewUser: boolean;
+    data: {
+        accessToken: string;
+        refreshToken: string;
+        isNewUser: boolean;
+    };
 }
 
 export interface CheckWalletAddressResponse {

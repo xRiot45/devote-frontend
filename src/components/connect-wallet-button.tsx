@@ -44,7 +44,7 @@ const ConnectWalletButton: React.FC = () => {
                             description: 'Login successfully!',
                         });
 
-                        localStorage.setItem('accessToken', result.accessToken);
+                        localStorage.setItem('accessToken', result?.data?.accessToken);
                         router.push('/');
                     } else {
                         localStorage.setItem('walletAddress', address);

@@ -65,7 +65,7 @@ export default function Step2Page() {
                 toast.success('Success', {
                     description: 'Registration successfully!',
                 });
-                localStorage.setItem('accessToken', data.accessToken);
+                localStorage.setItem('accessToken', data?.data.accessToken);
                 localStorage.removeItem('walletAddress');
                 localStorage.removeItem('name');
                 router.push('/');

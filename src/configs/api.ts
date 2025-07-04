@@ -1,6 +1,6 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import router from 'next/router';
+// import router from 'next/router';
 
 const api = axios.create({
     baseURL: process.env.NEXT_PUBLIC_API_URL,
@@ -13,7 +13,8 @@ const api = axios.create({
 
 api.interceptors.request.use(
     (config) => {
-        const token = Cookies.get('accessToken');
+        // const token = Cookies.get('accessToken');
+        const token = localStorage.getItem('accessToken');
 
         if (token && config.headers) {
             config.headers.Authorization = `Bearer ${token}`;
@@ -34,7 +35,7 @@ api.interceptors.response.use(
 
             if (status == 401) {
                 Cookies.remove('accessToken');
-                router.push('/');
+                // router.push('/');
             }
         }
 
