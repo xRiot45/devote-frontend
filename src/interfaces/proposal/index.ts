@@ -29,3 +29,17 @@ export interface ProposalsResponse {
         links: object;
     };
 }
+
+export type ProposalFormValues = {
+    title: string;
+    description: string;
+    category: string;
+    startTime: Date;
+    endTime: Date;
+    options: {
+        label: string;
+        description: string;
+        image?: string;
+        order: number;
+    }[];
+};
