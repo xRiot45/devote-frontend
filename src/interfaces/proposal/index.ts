@@ -16,6 +16,8 @@ export interface Proposal {
     status: string;
     creatorWallet: string;
     proposalOptions: ProposalOption[];
+    createdAt: string;
+    updatedAt: string;
 }
 
 export interface ProposalsResponse {
