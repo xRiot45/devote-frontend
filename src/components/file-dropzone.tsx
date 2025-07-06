@@ -37,7 +37,14 @@ export default function FileDropzone({ onFileChange, error, initialImage, descri
                 <input {...getInputProps()} />
                 {preview ? (
                     <>
-                        <Image src={preview} alt="Preview" className="mt-2 max-h-40 rounded-lg shadow" />
+                        <Image
+                            src={preview}
+                            alt="Preview"
+                            width={400}
+                            height={400}
+                            className="rounded-lg shadow object-contain max-w-full h-auto"
+                            unoptimized
+                        />
                         <p className="text-sm text-gray-500">
                             {!description ? 'Drag & drop gambar di sini, atau klik untuk memilih' : description}
                         </p>

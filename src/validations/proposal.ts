@@ -11,7 +11,7 @@ const dateSchema = z.preprocess(
 export const proposalOptionSchema = z.object({
     label: z.string().min(1, { message: 'Option label is required' }).max(100),
     description: z.string().min(1, { message: 'Option description is required' }),
-    image: z.string().optional(),
+    image: z.instanceof(File).optional(),
     order: z.number({ message: 'Option order must be a number' }),
 });
 

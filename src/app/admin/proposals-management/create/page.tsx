@@ -42,7 +42,7 @@ export default function CreateProposalPage() {
             category: '',
             startTime: new Date(),
             endTime: new Date(),
-            options: [{ label: '', description: '', image: undefined, order: 1 }],
+            options: [{ label: '', description: '', image: undefined, order: 0 }],
         },
     });
 
@@ -246,7 +246,11 @@ export default function CreateProposalPage() {
                                             <FormControl>
                                                 <Input
                                                     type="number"
-                                                    {...field}
+                                                    value={field.value ?? ''}
+                                                    onChange={(e) => {
+                                                        const value = e.target.value;
+                                                        field.onChange(value === '' ? undefined : Number(value));
+                                                    }}
                                                     className={`py-6 rounded-md text-base shadow-none ${
                                                         form.formState.errors.options?.[index]?.order?.message
                                                             ? 'border-red-500 focus-visible:ring-red-500'
@@ -295,10 +299,7 @@ export default function CreateProposalPage() {
                                 <Icon icon={'material-symbols:cancel'} />
                             </Button>
                             <Button
-                                type="button"
-                                onClick={() =>
-                                    append({ label: '', description: '', image: undefined, order: fields.length + 1 })
-                                }
+                                type="submit"
                                 className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white hover:from-indigo-600 hover:to-purple-700 transition-all cursor-pointer py-5"
                             >
                                 Create Proposal
