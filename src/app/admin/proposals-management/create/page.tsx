@@ -1,23 +1,39 @@
 'use client';
 
+import { DatePickerInput } from '@/components/date-picker-input';
+import FileDropzone from '@/components/file-dropzone';
+import RichTextEditor from '@/components/rich-text-editor';
 import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
+import { useBreadcrumb } from '@/contexts/breadcrumb-context';
 import { ProposalFormValues } from '@/interfaces/proposal';
-import { formatDateTimeLocal } from '@/utils/format-date-time-local';
+import { BreadcrumbItem } from '@/types';
 import { proposalValidationSchema } from '@/validations/proposal';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Icon } from '@iconify/react';
+import { useEffect } from 'react';
 import { Resolver, useFieldArray, useForm } from 'react-hook-form';
 
+const breadcrumbs: BreadcrumbItem[] = [
+    {
+        title: 'Admin',
+        href: '#',
+    },
+    {
+        title: 'Proposals Management',
+        href: '/admin/proposals-management',
+    },
+    {
+        title: 'Create Proposal',
+        href: '#',
+    },
+];
+
 export default function CreateProposalPage() {
-    const {
-        register,
-        handleSubmit,
-        watch,
-        control,
-        formState: { errors },
-    } = useForm<ProposalFormValues>({
+    const { setBreadcrumbs } = useBreadcrumb();
+    const form = useForm<ProposalFormValues>({
         resolver: zodResolver(proposalValidationSchema) as Resolver<ProposalFormValues>,
         mode: 'onChange',
         defaultValues: {
@@ -26,12 +42,12 @@ export default function CreateProposalPage() {
             category: '',
             startTime: new Date(),
             endTime: new Date(),
-            options: [{ label: '', description: '', order: 1 }],
+            options: [{ label: '', description: '', image: undefined, order: 1 }],
         },
     });
 
     const { fields, append, remove } = useFieldArray({
-        control,
+        control: form.control,
         name: 'options',
     });
 
@@ -39,100 +55,259 @@ export default function CreateProposalPage() {
         console.log('✅ Submitted data:', data);
     };
 
+    useEffect(() => {
+        setBreadcrumbs(breadcrumbs);
+    }, [setBreadcrumbs]);
+
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-            <div>
-                <Label htmlFor="title">Title</Label>
-                <Input id="title" {...register('title')} />
-                {errors.title && <p className="text-sm text-red-500">{errors.title.message}</p>}
-            </div>
+        <main className="p-2">
+            <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                    {/* Proposal Title */}
+                    <FormField
+                        control={form.control}
+                        name="title"
+                        render={({ field }) => (
+                            <FormItem className="space-y-1">
+                                <FormLabel>Title</FormLabel>
+                                <FormControl>
+                                    <Input
+                                        id="name"
+                                        type="text"
+                                        placeholder="e.g. Community leader voting"
+                                        {...field}
+                                        className={`py-6 rounded-md text-base shadow-none ${
+                                            form.formState.errors.title
+                                                ? 'border-red-500 focus-visible:ring-red-500'
+                                                : ''
+                                        }`}
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
 
-            <div>
-                <Label htmlFor="description">Description</Label>
-                <Textarea id="description" {...register('description')} />
-                {errors.description && <p className="text-sm text-red-500">{errors.description.message}</p>}
-            </div>
+                    {/* Proposal Category */}
+                    <FormField
+                        control={form.control}
+                        name="category"
+                        render={({ field }) => (
+                            <FormItem className="space-y-1">
+                                <FormLabel>Category</FormLabel>
+                                <FormControl>
+                                    <Input
+                                        id="name"
+                                        type="text"
+                                        placeholder="e.g. Community"
+                                        {...field}
+                                        className={`py-6 rounded-md text-base shadow-none ${
+                                            form.formState.errors.category
+                                                ? 'border-red-500 focus-visible:ring-red-500'
+                                                : ''
+                                        }`}
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
 
-            <div>
-                <Label htmlFor="category">Category</Label>
-                <Input id="category" {...register('category')} />
-                {errors.category && <p className="text-sm text-red-500">{errors.category.message}</p>}
-            </div>
+                    {/* Proposal Description */}
+                    <FormField
+                        control={form.control}
+                        name="description"
+                        render={({ field }) => (
+                            <FormItem className="space-y-1">
+                                <FormLabel>Description</FormLabel>
+                                <FormControl>
+                                    <RichTextEditor
+                                        value={field.value}
+                                        onChangeAction={field.onChange}
+                                        error={form.formState.errors.description?.message}
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
 
-            <div>
-                <Label htmlFor="startTime">Start Time</Label>
-                <Input
-                    id="startTime"
-                    type="datetime-local"
-                    {...register('startTime')}
-                    value={formatDateTimeLocal(watch('startTime'))}
-                />
-                {errors.startTime && <p className="text-sm text-red-500">{errors.startTime.message}</p>}
-            </div>
+                    {/* Proposal Start Time */}
+                    <FormField
+                        control={form.control}
+                        name="startTime"
+                        render={({ field }) => (
+                            <FormItem className="space-y-1">
+                                <FormLabel>Start Time</FormLabel>
+                                <FormControl>
+                                    <DatePickerInput
+                                        date={field.value}
+                                        onChangeAction={field.onChange}
+                                        placeholder="Select start date"
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
 
-            <div>
-                <Label htmlFor="endTime">End Time</Label>
-                <Input
-                    id="endTime"
-                    type="datetime-local"
-                    {...register('endTime')}
-                    value={formatDateTimeLocal(watch('endTime'))}
-                />
-                {errors.endTime && <p className="text-sm text-red-500">{errors.endTime.message}</p>}
-            </div>
+                    {/* Proposal End Time */}
+                    <FormField
+                        control={form.control}
+                        name="endTime"
+                        render={({ field }) => (
+                            <FormItem className="space-y-1">
+                                <FormLabel>End Time</FormLabel>
+                                <FormControl>
+                                    <DatePickerInput
+                                        date={field.value}
+                                        onChangeAction={field.onChange}
+                                        placeholder="Select end date"
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
 
-            <div>
-                <Label>Options</Label>
-                <div className="space-y-4">
-                    {fields.map((field, index) => (
-                        <div key={field.id} className="border rounded p-4 space-y-3">
-                            <div>
-                                <Label>Label</Label>
-                                <Input {...register(`options.${index}.label`)} />
-                                {errors.options?.[index]?.label && (
-                                    <p className="text-sm text-red-500">{errors.options[index]?.label?.message}</p>
-                                )}
-                            </div>
+                    {/* Proposal Options */}
+                    <div className="space-y-4">
+                        <h3 className="text-lg font-semibold">Proposal Options</h3>
+                        {fields.map((field, index) => (
+                            <Card key={field.id} className=" border p-6 rounded-md shadow-none relative">
+                                {/* Label */}
+                                <FormField
+                                    control={form.control}
+                                    name={`options.${index}.label`}
+                                    render={({ field }) => (
+                                        <FormItem className="space-y-1">
+                                            <FormLabel>Label</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    type="text"
+                                                    placeholder="e.g. Candidate A"
+                                                    {...field}
+                                                    className={`py-6 rounded-md text-base shadow-none ${
+                                                        form.formState.errors.options?.[index]?.label?.message
+                                                            ? 'border-red-500 focus-visible:ring-red-500'
+                                                            : ''
+                                                    }`}
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
 
-                            <div>
-                                <Label>Description</Label>
-                                <Textarea {...register(`options.${index}.description`)} />
-                                {errors.options?.[index]?.description && (
-                                    <p className="text-sm text-red-500">
-                                        {errors.options[index]?.description?.message}
-                                    </p>
-                                )}
-                            </div>
+                                {/* Description */}
+                                <FormField
+                                    control={form.control}
+                                    name={`options.${index}.description`}
+                                    render={({ field }) => (
+                                        <FormItem className="space-y-1">
+                                            <FormLabel>Description</FormLabel>
+                                            <FormControl>
+                                                <RichTextEditor
+                                                    value={field.value}
+                                                    onChangeAction={field.onChange}
+                                                    error={form.formState.errors.options?.[index]?.description?.message}
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
 
-                            <div>
-                                <Label>Image URL</Label>
-                                <Input {...register(`options.${index}.image`)} />
-                            </div>
+                                {/* Image */}
+                                <FormField
+                                    control={form.control}
+                                    name={`options.${index}.image`}
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Image</FormLabel>
+                                            <FormControl>
+                                                <FileDropzone
+                                                    onFileChange={(file) => field.onChange(file)}
+                                                    error={form.formState.errors.options?.[index]?.image?.message}
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
 
-                            <div>
-                                <Label>Order</Label>
-                                <Input type="number" {...register(`options.${index}.order`, { valueAsNumber: true })} />
-                                {errors.options?.[index]?.order && (
-                                    <p className="text-sm text-red-500">{errors.options[index]?.order?.message}</p>
-                                )}
-                            </div>
+                                {/* Order */}
+                                <FormField
+                                    control={form.control}
+                                    name={`options.${index}.order`}
+                                    render={({ field }) => (
+                                        <FormItem className="space-y-1">
+                                            <FormLabel>Order</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    type="number"
+                                                    {...field}
+                                                    className={`py-6 rounded-md text-base shadow-none ${
+                                                        form.formState.errors.options?.[index]?.order?.message
+                                                            ? 'border-red-500 focus-visible:ring-red-500'
+                                                            : ''
+                                                    }`}
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
 
-                            <Button type="button" variant="destructive" onClick={() => remove(index)}>
-                                Remove Option
+                                {/* Remove Option Button */}
+                                <Button
+                                    type="button"
+                                    onClick={() => remove(index)}
+                                    className="absolute -top-4 -right-2 bg-red-500 text-white rounded-full w-8 h-8 cursor-pointer text-sm flex items-center justify-center hover:bg-red-700 transition"
+                                    title="Remove Option"
+                                >
+                                    ×
+                                </Button>
+                            </Card>
+                        ))}
+
+                        {/* Add Option Button */}
+                        <div className="flex items-center justify-end gap-2">
+                            <Button
+                                type="button"
+                                onClick={() =>
+                                    append({ label: '', description: '', image: undefined, order: fields.length + 1 })
+                                }
+                                className="bg-blue-500 cursor-pointer hover:bg-blue-700 py-5"
+                            >
+                                Add Option
+                                <Icon icon={'ic:baseline-plus'} />
+                            </Button>
+                            <Button
+                                variant="destructive"
+                                type="button"
+                                onClick={() =>
+                                    append({ label: '', description: '', image: undefined, order: fields.length + 1 })
+                                }
+                                className="cursor-pointer py-5"
+                            >
+                                Cancel
+                                <Icon icon={'material-symbols:cancel'} />
+                            </Button>
+                            <Button
+                                type="button"
+                                onClick={() =>
+                                    append({ label: '', description: '', image: undefined, order: fields.length + 1 })
+                                }
+                                className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white hover:from-indigo-600 hover:to-purple-700 transition-all cursor-pointer py-5"
+                            >
+                                Create Proposal
+                                <Icon icon={'material-symbols:done'} />
                             </Button>
                         </div>
-                    ))}
-                </div>
-
-                <Button
-                    type="button"
-                    onClick={() => append({ label: '', description: '', image: '', order: fields.length + 1 })}
-                >
-                    Add Option
-                </Button>
-            </div>
-
-            <Button type="submit">Submit</Button>
-        </form>
+                    </div>
+                </form>
+            </Form>
+        </main>
     );
 }

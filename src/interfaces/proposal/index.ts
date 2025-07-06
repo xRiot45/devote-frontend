@@ -39,7 +39,7 @@ export type ProposalFormValues = {
     options: {
         label: string;
         description: string;
-        image?: string;
+        image?: File | undefined;
         order: number;
     }[];
 };

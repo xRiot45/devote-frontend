@@ -1,7 +1,6 @@
 'use client';
 
 import {
-    Sidebar,
     SidebarContent,
     SidebarGroup,
     SidebarGroupLabel,
@@ -11,13 +10,14 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import Link from 'next/link';
+import ClientOnlySidebar from './components/client-only-sidebar';
 import GroupContent from './components/group-content';
 import NavMain from './components/nav-main';
 import mainNavItems from './main-nav-items';
 
 export default function SidebarAdmin() {
     return (
-        <Sidebar collapsible="offcanvas" variant="inset" className="bg-white dark:bg-black border-r">
+        <ClientOnlySidebar collapsible="offcanvas" variant="inset" className="bg-white dark:bg-black border-r">
             <SidebarHeader className="dark:bg-black">
                 <SidebarMenu>
                     <SidebarMenuItem>
@@ -55,6 +55,6 @@ export default function SidebarAdmin() {
                     </SidebarGroup>
                 ))}
             </SidebarContent>
-        </Sidebar>
+        </ClientOnlySidebar>
     );
 }

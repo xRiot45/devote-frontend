@@ -121,4 +121,16 @@
     body {
         @apply bg-background text-foreground;
     }
+
+    .ProseMirror h1 {
+        @apply text-3xl font-bold mt-4 mb-2;
+    }
+
+    .ProseMirror h2 {
+        @apply text-2xl font-semibold mt-4 mb-2;
+    }
+
+    .ProseMirror h3 {
+        @apply text-xl font-medium mt-3 mb-1;
+    }
 }
