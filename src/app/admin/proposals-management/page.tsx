@@ -9,6 +9,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { BASE_URL } from '@/configs/url';
 import { useBreadcrumb } from '@/contexts/breadcrumb-context';
 import { StatusEnum } from '@/enums/status';
+import { useDeleteProposal } from '@/hooks/proposal/useDeleteProposal';
 import { useFetchProposals } from '@/hooks/proposal/useFetchProposals';
 import { cn } from '@/lib/utils';
 import { BreadcrumbItem } from '@/types';
@@ -33,6 +34,7 @@ export default function ProposalsManagement() {
     const { setBreadcrumbs } = useBreadcrumb();
     const { data, isPending } = useFetchProposals();
     const proposalsData = data?.data?.items;
+    const deleteProposal = useDeleteProposal();
 
     useEffect(() => {
         setBreadcrumbs(breadcrumbs);
@@ -97,20 +99,23 @@ export default function ProposalsManagement() {
                                         </Tooltip>
 
                                         {/* Delete Button */}
-                                        <Tooltip>
-                                            <TooltipTrigger asChild>
-                                                <Button
-                                                    size="icon"
-                                                    variant="ghost"
-                                                    className="hover:bg-red-100 dark:hover:bg-zinc-800 cursor-pointer"
-                                                >
-                                                    <Icon icon="lucide:trash-2" className="w-4 h-4 text-red-500" />
-                                                </Button>
-                                            </TooltipTrigger>
-                                            <TooltipContent side="top" align="center">
-                                                Delete Proposal
-                                            </TooltipContent>
-                                        </Tooltip>
+                                        {proposal.startTime !== StatusEnum.DRAFT && (
+                                            <Tooltip>
+                                                <TooltipTrigger asChild>
+                                                    <Button
+                                                        size="icon"
+                                                        variant="ghost"
+                                                        className="hover:bg-red-100 dark:hover:bg-zinc-800 cursor-pointer"
+                                                        onClick={() => deleteProposal.mutate(Number(proposal.id))}
+                                                    >
+                                                        <Icon icon="lucide:trash-2" className="w-4 h-4 text-red-500" />
+                                                    </Button>
+                                                </TooltipTrigger>
+                                                <TooltipContent side="top" align="center">
+                                                    Delete Proposal
+                                                </TooltipContent>
+                                            </Tooltip>
+                                        )}
                                     </TooltipProvider>
                                 </div>
 
