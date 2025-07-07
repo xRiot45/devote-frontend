@@ -94,8 +94,6 @@ export default function CreateProposalPage() {
                 });
             },
         });
-
-        console.log(payload);
     };
 
     useEffect(() => {
