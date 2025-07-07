@@ -1,7 +1,7 @@
 export interface ProposalOption {
     id: number;
     label: string;
-    image: string;
+    image?: File | undefined;
     order: number;
     description: string;
 }
@@ -41,5 +41,6 @@ export type ProposalFormValues = {
         description: string;
         image?: File | undefined;
         order: number;
+        initialImage?: string | null;
     }[];
 };

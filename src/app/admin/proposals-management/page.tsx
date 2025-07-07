@@ -77,52 +77,100 @@ export default function ProposalsManagement() {
                     {proposalsData?.map((proposal) => (
                         <div key={proposal.id}>
                             <Card className="relative bg-white/10 dark:bg-zinc-900/20 border shadow-none backdrop-blur-md hover:shadow-indigo-500/30 transition-all duration-300 rounded-2xl overflow-hidden group">
-                                {/* Tombol Edit & Delete */}
-                                <div className="absolute top-4 right-4 flex space-x-2  ">
+                                {/* Tombol Edit, Delete, dan Status Actions */}
+                                <div className="absolute top-4 right-4 flex space-x-2">
                                     <TooltipProvider>
+                                        {/* Tombol Edit */}
                                         {proposal.status === StatusEnum.DRAFT && (
-                                            <>
-                                                {/* Edit Button */}
-                                                <Tooltip>
-                                                    <TooltipTrigger asChild>
-                                                        <Link href={`/admin/proposals-management/${proposal.id}/edit`}>
-                                                            <Button
-                                                                size="icon"
-                                                                variant="ghost"
-                                                                className="hover:bg-indigo-100 dark:hover:bg-zinc-800 cursor-pointer"
-                                                            >
-                                                                <Icon
-                                                                    icon="lucide:edit"
-                                                                    className="w-4 h-4 text-indigo-600"
-                                                                />
-                                                            </Button>
-                                                        </Link>
-                                                    </TooltipTrigger>
-                                                    <TooltipContent side="top" align="center">
-                                                        Edit Proposal
-                                                    </TooltipContent>
-                                                </Tooltip>
-
-                                                {/* Delete Button */}
-                                                <Tooltip>
-                                                    <TooltipTrigger asChild>
+                                            <Tooltip>
+                                                <TooltipTrigger asChild>
+                                                    <Link href={`/admin/proposals-management/${proposal.id}/edit`}>
                                                         <Button
                                                             size="icon"
                                                             variant="ghost"
-                                                            className="hover:bg-red-100 dark:hover:bg-zinc-800 cursor-pointer"
-                                                            onClick={() => deleteProposal.mutate(Number(proposal.id))}
+                                                            className="hover:bg-indigo-100 dark:hover:bg-zinc-800 cursor-pointer"
                                                         >
                                                             <Icon
-                                                                icon="lucide:trash-2"
-                                                                className="w-4 h-4 text-red-500"
+                                                                icon="lucide:edit"
+                                                                className="w-4 h-4 text-indigo-600"
                                                             />
                                                         </Button>
-                                                    </TooltipTrigger>
-                                                    <TooltipContent side="top" align="center">
-                                                        Delete Proposal
-                                                    </TooltipContent>
-                                                </Tooltip>
-                                            </>
+                                                    </Link>
+                                                </TooltipTrigger>
+                                                <TooltipContent>Edit Proposal</TooltipContent>
+                                            </Tooltip>
+                                        )}
+
+                                        {/* Tombol Delete */}
+                                        {proposal.status === StatusEnum.DRAFT && (
+                                            <Tooltip>
+                                                <TooltipTrigger asChild>
+                                                    <Button
+                                                        size="icon"
+                                                        variant="ghost"
+                                                        className="hover:bg-red-100 dark:hover:bg-zinc-800 cursor-pointer"
+                                                        onClick={() => deleteProposal.mutate(Number(proposal.id))}
+                                                    >
+                                                        <Icon icon="lucide:trash-2" className="w-4 h-4 text-red-500" />
+                                                    </Button>
+                                                </TooltipTrigger>
+                                                <TooltipContent>Delete Proposal</TooltipContent>
+                                            </Tooltip>
+                                        )}
+
+                                        {/* Tombol Publish */}
+                                        {proposal.status === StatusEnum.DRAFT && (
+                                            <Tooltip>
+                                                <TooltipTrigger asChild>
+                                                    <Button
+                                                        size="icon"
+                                                        variant="ghost"
+                                                        className="hover:bg-green-100 dark:hover:bg-zinc-800 cursor-pointer"
+                                                        // onClick={() => updateStatus(proposal.id, StatusEnum.ACTIVE)}
+                                                    >
+                                                        <Icon icon="lucide:rocket" className="w-4 h-4 text-green-500" />
+                                                    </Button>
+                                                </TooltipTrigger>
+                                                <TooltipContent>Publish</TooltipContent>
+                                            </Tooltip>
+                                        )}
+
+                                        {/* Tombol End */}
+                                        {proposal.status === StatusEnum.ACTIVE && (
+                                            <Tooltip>
+                                                <TooltipTrigger asChild>
+                                                    <Button
+                                                        size="icon"
+                                                        variant="ghost"
+                                                        className="hover:bg-yellow-100 dark:hover:bg-zinc-800 cursor-pointer"
+                                                        // onClick={() => updateStatus(proposal.id, StatusEnum.ENDED)}
+                                                    >
+                                                        <Icon icon="lucide:flag" className="w-4 h-4 text-yellow-500" />
+                                                    </Button>
+                                                </TooltipTrigger>
+                                                <TooltipContent>End Proposal</TooltipContent>
+                                            </Tooltip>
+                                        )}
+
+                                        {/* Tombol Cancel */}
+                                        {(proposal.status === StatusEnum.DRAFT ||
+                                            proposal.status === StatusEnum.ACTIVE) && (
+                                            <Tooltip>
+                                                <TooltipTrigger asChild>
+                                                    <Button
+                                                        size="icon"
+                                                        variant="ghost"
+                                                        className="hover:bg-gray-200 dark:hover:bg-zinc-800 cursor-pointer"
+                                                        // onClick={() => updateStatus(proposal.id, StatusEnum.CANCELLED)}
+                                                    >
+                                                        <Icon
+                                                            icon="lucide:x-circle"
+                                                            className="w-4 h-4 text-gray-500"
+                                                        />
+                                                    </Button>
+                                                </TooltipTrigger>
+                                                <TooltipContent>Cancel Proposal</TooltipContent>
+                                            </Tooltip>
                                         )}
                                     </TooltipProvider>
                                 </div>
