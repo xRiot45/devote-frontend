@@ -1,4 +1,5 @@
 import api from '@/configs/api';
+import { StatusEnum } from '@/enums/status';
 import { Proposal, ProposalFormValues, ProposalsResponse } from '@/interfaces/proposal';
 
 export async function fetchProposals(): Promise<ProposalsResponse> {
@@ -23,5 +24,10 @@ export async function updateProposal(id: number, payload: ProposalFormValues): P
 
 export async function deleteProposal(id: number): Promise<Proposal> {
     const response = await api.delete(`/api/proposals/${id}`);
+    return response.data;
+}
+
+export async function updateStatusProposal(id: number, status: StatusEnum): Promise<Proposal> {
+    const response = await api.put(`/api/proposals/${id}/status`, { status });
     return response.data;
 }

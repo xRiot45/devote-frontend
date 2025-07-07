@@ -11,13 +11,15 @@ import { useBreadcrumb } from '@/contexts/breadcrumb-context';
 import { StatusEnum } from '@/enums/status';
 import { useDeleteProposal } from '@/hooks/proposal/useDeleteProposal';
 import { useFetchProposals } from '@/hooks/proposal/useFetchProposals';
+import { useUpdateStatusProposal } from '@/hooks/proposal/useUpdateStatusProposal';
 import { cn } from '@/lib/utils';
 import { BreadcrumbItem } from '@/types';
 import { statusBadgeStyleMap, statusIconMap, statusLabelMap } from '@/utils/status-badge-style';
 import { Icon } from '@iconify/react';
 import Head from 'next/head';
 import Link from 'next/link';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import ConfirmStatusModal from './components/confirm-status-modal';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -35,6 +37,25 @@ export default function ProposalsManagement() {
     const { data, isPending } = useFetchProposals();
     const proposalsData = data?.data?.items;
     const deleteProposal = useDeleteProposal();
+    const updateStatusProposal = useUpdateStatusProposal();
+
+    const [modalOpen, setModalOpen] = useState<boolean>(false);
+    const [selectedAction, setSelectedAction] = useState<{ id: number; status: StatusEnum } | null>(null);
+
+    const handleStatusClick = (id: number, status: StatusEnum) => {
+        setSelectedAction({ id, status });
+        setModalOpen(true);
+    };
+
+    const confirmStatusChange = () => {
+        if (selectedAction) {
+            updateStatusProposal.mutate({
+                id: selectedAction.id,
+                status: selectedAction.status,
+            });
+        }
+        setModalOpen(false);
+    };
 
     useEffect(() => {
         setBreadcrumbs(breadcrumbs);
@@ -126,7 +147,9 @@ export default function ProposalsManagement() {
                                                         size="icon"
                                                         variant="ghost"
                                                         className="hover:bg-green-100 dark:hover:bg-zinc-800 cursor-pointer"
-                                                        // onClick={() => updateStatus(proposal.id, StatusEnum.ACTIVE)}
+                                                        onClick={() =>
+                                                            handleStatusClick(proposal.id, StatusEnum.ACTIVE)
+                                                        }
                                                     >
                                                         <Icon icon="lucide:rocket" className="w-4 h-4 text-green-500" />
                                                     </Button>
@@ -143,7 +166,7 @@ export default function ProposalsManagement() {
                                                         size="icon"
                                                         variant="ghost"
                                                         className="hover:bg-yellow-100 dark:hover:bg-zinc-800 cursor-pointer"
-                                                        // onClick={() => updateStatus(proposal.id, StatusEnum.ENDED)}
+                                                        onClick={() => handleStatusClick(proposal.id, StatusEnum.ENDED)}
                                                     >
                                                         <Icon icon="lucide:flag" className="w-4 h-4 text-yellow-500" />
                                                     </Button>
@@ -161,7 +184,9 @@ export default function ProposalsManagement() {
                                                         size="icon"
                                                         variant="ghost"
                                                         className="hover:bg-gray-200 dark:hover:bg-zinc-800 cursor-pointer"
-                                                        // onClick={() => updateStatus(proposal.id, StatusEnum.CANCELLED)}
+                                                        onClick={() =>
+                                                            handleStatusClick(proposal.id, StatusEnum.CANCELLED)
+                                                        }
                                                     >
                                                         <Icon
                                                             icon="lucide:x-circle"
@@ -175,7 +200,7 @@ export default function ProposalsManagement() {
                                     </TooltipProvider>
                                 </div>
 
-                                <CardContent className="p-6 space-y-6 mt-6">
+                                <CardContent className="p-6 space-y-6 mt-4">
                                     {/* Header */}
                                     <div className="flex justify-between items-center mb-8">
                                         <Badge className="capitalize text-xs px-3 py-1 bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-full shadow-none">
@@ -243,6 +268,13 @@ export default function ProposalsManagement() {
                     ))}
                 </div>
             )}
+
+            <ConfirmStatusModal
+                open={modalOpen}
+                onClose={() => setModalOpen(false)}
+                onConfirm={confirmStatusChange}
+                statusLabel={selectedAction?.status ?? '-'}
+            />
         </>
     );
 }
