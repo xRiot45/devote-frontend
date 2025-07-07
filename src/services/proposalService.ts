@@ -15,3 +15,8 @@ export async function createProposal(payload: ProposalFormValues): Promise<Propo
     const response = await api.post('/api/proposals', payload);
     return response.data;
 }
+
+export async function deleteProposal(id: number): Promise<Proposal> {
+    const response = await api.delete(`/api/proposals/${id}`);
+    return response.data;
+}

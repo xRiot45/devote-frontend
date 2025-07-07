@@ -71,7 +71,7 @@ export default function ProposalsManagement() {
             {isPending ? (
                 <Loader />
             ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-2">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-2">
                     {proposalsData?.map((proposal) => (
                         <div key={proposal.id}>
                             <Card className="relative bg-white/10 dark:bg-zinc-900/20 border shadow-none backdrop-blur-md hover:shadow-indigo-500/30 transition-all duration-300 rounded-2xl overflow-hidden group">
@@ -137,13 +137,8 @@ export default function ProposalsManagement() {
                                         {proposal.title}
                                     </span>
 
-                                    {/* Description */}
-                                    <p className="text-sm text-zinc-500 line-clamp-2 mt-2">
-                                        {proposal.description.slice(0, 620) + '....'}
-                                    </p>
-
                                     {/* Metadata */}
-                                    <div className="text-muted-foreground space-y-3.5">
+                                    <div className="text-muted-foreground space-y-3.5 mt-4">
                                         <p className="text-sm flex">
                                             <Icon
                                                 icon="ant-design:calendar-outlined"

@@ -17,7 +17,6 @@ import { Icon } from '@iconify/react';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { Resolver, useFieldArray, useForm } from 'react-hook-form';
-import { toast } from 'sonner';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -35,9 +34,10 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function CreateProposalPage() {
+    const { setBreadcrumbs } = useBreadcrumb();
     const createProposal = useCreateProposal();
     const router = useRouter();
-    const { setBreadcrumbs } = useBreadcrumb();
+
     const form = useForm<ProposalFormValues>({
         resolver: zodResolver(proposalValidationSchema) as Resolver<ProposalFormValues>,
         mode: 'onChange',
@@ -81,19 +81,7 @@ export default function CreateProposalPage() {
             }
         });
 
-        createProposal.mutate(formData as unknown as ProposalFormValues, {
-            onSuccess: () => {
-                toast.success('Success', {
-                    description: 'Proposal created successfully!',
-                });
-                router.push('/admin/proposals-management');
-            },
-            onError: (error) => {
-                toast.error('Error', {
-                    description: `Proposal creation failed: ${error.message}`,
-                });
-            },
-        });
+        createProposal.mutate(formData as unknown as ProposalFormValues);
     };
 
     useEffect(() => {
