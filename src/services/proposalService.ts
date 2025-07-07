@@ -1,5 +1,5 @@
 import api from '@/configs/api';
-import { Proposal, ProposalsResponse } from '@/interfaces/proposal';
+import { Proposal, ProposalFormValues, ProposalsResponse } from '@/interfaces/proposal';
 
 export async function fetchProposals(): Promise<ProposalsResponse> {
     const response = await api.get('/api/proposals');
@@ -9,4 +9,9 @@ export async function fetchProposals(): Promise<ProposalsResponse> {
 export async function fetchProposalById(id: number): Promise<Proposal> {
     const response = await api.get(`/api/proposals/${id}`);
     return response.data.data;
+}
+
+export async function createProposal(payload: ProposalFormValues): Promise<Proposal> {
+    const response = await api.post('/api/proposals', payload);
+    return response.data;
 }

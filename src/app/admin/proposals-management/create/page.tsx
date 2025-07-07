@@ -8,13 +8,16 @@ import { Card } from '@/components/ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useBreadcrumb } from '@/contexts/breadcrumb-context';
+import { useCreateProposal } from '@/hooks/proposal/useCreateProposal';
 import { ProposalFormValues } from '@/interfaces/proposal';
 import { BreadcrumbItem } from '@/types';
 import { proposalValidationSchema } from '@/validations/proposal';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Icon } from '@iconify/react';
+import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { Resolver, useFieldArray, useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -32,6 +35,8 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function CreateProposalPage() {
+    const createProposal = useCreateProposal();
+    const router = useRouter();
     const { setBreadcrumbs } = useBreadcrumb();
     const form = useForm<ProposalFormValues>({
         resolver: zodResolver(proposalValidationSchema) as Resolver<ProposalFormValues>,
@@ -51,8 +56,46 @@ export default function CreateProposalPage() {
         name: 'options',
     });
 
-    const onSubmit = (data: ProposalFormValues) => {
-        console.log('✅ Submitted data:', data);
+    const handleFileChange = (index: number, file: File) => {
+        if (file && file instanceof File) {
+            form.setValue(`options.${index}.image`, file, { shouldValidate: true });
+        }
+    };
+
+    const onSubmit = (payload: ProposalFormValues) => {
+        const formData = new FormData();
+
+        formData.append('title', payload.title);
+        formData.append('description', payload.description);
+        formData.append('category', payload.category);
+        formData.append('startTime', payload.startTime.toISOString());
+        formData.append('endTime', payload.endTime.toISOString());
+
+        payload?.options.forEach((option, index) => {
+            formData.append(`options[${index}].label`, option.label);
+            formData.append(`options[${index}].description`, option.description);
+            formData.append(`options[${index}].order`, option.order.toString());
+
+            if (option.image instanceof File) {
+                formData.append(`image_${index}`, option.image);
+            }
+        });
+
+        createProposal.mutate(formData as unknown as ProposalFormValues, {
+            onSuccess: () => {
+                toast.success('Success', {
+                    description: 'Proposal created successfully!',
+                });
+                router.push('/admin/proposals-management');
+            },
+            onError: (error) => {
+                toast.error('Error', {
+                    description: `Proposal creation failed: ${error.message}`,
+                });
+            },
+        });
+
+        console.log(payload);
     };
 
     useEffect(() => {
@@ -222,12 +265,12 @@ export default function CreateProposalPage() {
                                 <FormField
                                     control={form.control}
                                     name={`options.${index}.image`}
-                                    render={({ field }) => (
+                                    render={({}) => (
                                         <FormItem>
                                             <FormLabel>Image</FormLabel>
                                             <FormControl>
                                                 <FileDropzone
-                                                    onFileChange={(file) => field.onChange(file)}
+                                                    onFileChange={(file: File) => handleFileChange(index, file)}
                                                     error={form.formState.errors.options?.[index]?.image?.message}
                                                 />
                                             </FormControl>
@@ -290,9 +333,7 @@ export default function CreateProposalPage() {
                             <Button
                                 variant="destructive"
                                 type="button"
-                                onClick={() =>
-                                    append({ label: '', description: '', image: undefined, order: fields.length + 1 })
-                                }
+                                onClick={router.back}
                                 className="cursor-pointer py-5"
                             >
                                 Cancel

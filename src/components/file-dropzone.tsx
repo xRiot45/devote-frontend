@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 
 interface FileDropzoneProps {
-    onFileChange: (file: File | null) => void;
+    onFileChange: (file: File) => void;
     error?: string;
     initialImage?: string | null;
     description?: string;
