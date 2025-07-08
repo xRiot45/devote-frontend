@@ -35,7 +35,6 @@ export default function VotingSessionsPage() {
     const { setBreadcrumbs } = useBreadcrumb();
     const { data, isPending } = useFetchVotingSession();
     const votingSessionData = data?.data;
-    console.log(votingSessionData);
     const updateStatusProposal = useUpdateStatusProposal();
 
     const [modalOpen, setModalOpen] = useState<boolean>(false);

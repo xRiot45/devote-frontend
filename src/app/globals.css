@@ -1,5 +1,6 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
+@plugin '@tailwindcss/typography';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -118,6 +119,7 @@
         @apply border-border outline-ring/50;
         font-family: var(--font-sans);
     }
+
     body {
         @apply bg-background text-foreground;
     }
@@ -132,5 +134,29 @@
 
     .ProseMirror h3 {
         @apply text-xl font-medium mt-3 mb-1;
+    }
+
+    .ProseMirror ul {
+        @apply list-disc pl-5 mb-2;
+    }
+
+    .ProseMirror ol {
+        @apply list-decimal pl-5 mb-2;
+    }
+
+    .ProseMirror li {
+        @apply mb-1;
+    }
+
+    .ProseMirror p {
+        @apply mb-3 leading-relaxed;
+    }
+
+    .ProseMirror strong {
+        @apply font-semibold;
+    }
+
+    .ProseMirror em {
+        @apply italic;
     }
 }
