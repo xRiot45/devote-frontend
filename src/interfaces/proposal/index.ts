@@ -23,11 +23,7 @@ export interface Proposal {
 export interface ProposalsResponse {
     success: boolean;
     message: string;
-    data: {
-        items: Proposal[];
-        meta: object;
-        links: object;
-    };
+    data: Proposal[];
 }
 
 export type ProposalFormValues = {

@@ -14,7 +14,7 @@ import Link from 'next/link';
 
 export default function VotePage() {
     const { data, isPending, isError } = useFetchProposals();
-    const proposals = data?.data.items;
+    const proposals = data?.data;
 
     return (
         <>

@@ -10,9 +10,8 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { BASE_URL } from '@/configs/url';
 import { useBreadcrumb } from '@/contexts/breadcrumb-context';
 import { StatusEnum } from '@/enums/status';
-import { useDeleteProposal } from '@/hooks/proposal/useDeleteProposal';
-import { useFetchProposals } from '@/hooks/proposal/useFetchProposals';
 import { useUpdateStatusProposal } from '@/hooks/proposal/useUpdateStatusProposal';
+import { useFetchVotingSession } from '@/hooks/voting-session/useFetchVotingSession';
 import { cn } from '@/lib/utils';
 import { BreadcrumbItem } from '@/types';
 import { statusBadgeStyleMap, statusIconMap, statusLabelMap } from '@/utils/status-badge-style';
@@ -27,16 +26,16 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: '#',
     },
     {
-        title: 'Proposals Management',
-        href: '/admin/proposals-management',
+        title: 'Voting Sessions',
+        href: '/admin/voting-sessions',
     },
 ];
 
-export default function ProposalsManagement() {
+export default function VotingSessionsPage() {
     const { setBreadcrumbs } = useBreadcrumb();
-    const { data, isPending } = useFetchProposals();
-    const proposalsData = data?.data;
-    const deleteProposal = useDeleteProposal();
+    const { data, isPending } = useFetchVotingSession();
+    const votingSessionData = data?.data;
+    console.log(votingSessionData);
     const updateStatusProposal = useUpdateStatusProposal();
 
     const [modalOpen, setModalOpen] = useState<boolean>(false);
@@ -64,13 +63,13 @@ export default function ProposalsManagement() {
     return (
         <>
             <Head>
-                <title>Proposals Management</title>
-                <meta name="description" content="Proposals Management" />
+                <title>Voting Sessions</title>
+                <meta name="description" content="Voting Sessions" />
             </Head>
             <div className="mb-2 flex flex-wrap justify-between space-y-2 mt-6 p-2">
                 <div>
-                    <h1 className="text-2xl font-semibold tracking-tight ">Proposals Management</h1>
-                    <p className="text-muted-foreground mt-1.5 text-[14px]">Manage and control proposals data.</p>
+                    <h1 className="text-2xl font-semibold tracking-tight ">Voting Sessions</h1>
+                    <p className="text-muted-foreground mt-1.5 text-[14px]">Manage and control voting sessions</p>
                 </div>
 
                 <div className="flex gap-2">
@@ -81,13 +80,6 @@ export default function ProposalsManagement() {
                         <span>Refresh Page</span>
                         <Icon icon={'material-symbols:refresh'} />
                     </Button>
-
-                    <Link href={'/admin/proposals-management/create'}>
-                        <Button className="bg-gradient-to-r  from-indigo-500 to-purple-600 text-white hover:from-indigo-600 hover:to-purple-700 transition-all cursor-pointer">
-                            <span>Create Proposal</span>
-                            <Icon icon={'material-symbols:event-note'} />
-                        </Button>
-                    </Link>
                 </div>
             </div>
 
@@ -95,16 +87,15 @@ export default function ProposalsManagement() {
                 <Loader />
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-2">
-                    {proposalsData?.map((proposal) => (
+                    {votingSessionData?.map((proposal) => (
                         <div key={proposal.id}>
                             <Card className="relative bg-white/10 dark:bg-zinc-900/20 border shadow-none backdrop-blur-md hover:shadow-indigo-500/30 transition-all duration-300 rounded-2xl overflow-hidden group">
-                                {/* Tombol Edit, Delete, dan Status Actions */}
                                 <div className="absolute top-4 right-4 flex space-x-2">
                                     <TooltipProvider>
                                         {/* See Detail Proposal */}
                                         <Tooltip>
                                             <TooltipTrigger asChild>
-                                                <Link href={`/admin/proposals-management/${proposal.id}/show`}>
+                                                <Link href={`/admin/voting-sessions/${proposal.id}/show`}>
                                                     <Button
                                                         size="icon"
                                                         variant="ghost"
@@ -117,83 +108,23 @@ export default function ProposalsManagement() {
                                             <TooltipContent>See Proposal Detail</TooltipContent>
                                         </Tooltip>
 
-                                        {/* Tombol Edit */}
-                                        {proposal.status === StatusEnum.DRAFT && (
-                                            <Tooltip>
-                                                <TooltipTrigger asChild>
-                                                    <Link href={`/admin/proposals-management/${proposal.id}/edit`}>
-                                                        <Button
-                                                            size="icon"
-                                                            variant="ghost"
-                                                            className="hover:bg-indigo-100 dark:hover:bg-zinc-800 cursor-pointer"
-                                                        >
-                                                            <Icon
-                                                                icon="lucide:edit"
-                                                                className="w-4 h-4 text-indigo-600"
-                                                            />
-                                                        </Button>
-                                                    </Link>
-                                                </TooltipTrigger>
-                                                <TooltipContent>Edit Proposal</TooltipContent>
-                                            </Tooltip>
-                                        )}
-
-                                        {/* Tombol Delete */}
-                                        {proposal.status === StatusEnum.DRAFT && (
+                                        {/* Tombol End */}
+                                        {proposal.status === StatusEnum.ACTIVE && (
                                             <Tooltip>
                                                 <TooltipTrigger asChild>
                                                     <Button
                                                         size="icon"
                                                         variant="ghost"
-                                                        className="hover:bg-red-100 dark:hover:bg-zinc-800 cursor-pointer"
-                                                        onClick={() => deleteProposal.mutate(Number(proposal.id))}
-                                                    >
-                                                        <Icon icon="lucide:trash-2" className="w-4 h-4 text-red-500" />
-                                                    </Button>
-                                                </TooltipTrigger>
-                                                <TooltipContent>Delete Proposal</TooltipContent>
-                                            </Tooltip>
-                                        )}
-
-                                        {/* Tombol Publish */}
-                                        {proposal.status === StatusEnum.DRAFT && (
-                                            <Tooltip>
-                                                <TooltipTrigger asChild>
-                                                    <Button
-                                                        size="icon"
-                                                        variant="ghost"
-                                                        className="hover:bg-green-100 dark:hover:bg-zinc-800 cursor-pointer"
-                                                        onClick={() =>
-                                                            handleStatusClick(proposal.id, StatusEnum.ACTIVE)
-                                                        }
-                                                    >
-                                                        <Icon icon="lucide:rocket" className="w-4 h-4 text-green-500" />
-                                                    </Button>
-                                                </TooltipTrigger>
-                                                <TooltipContent>Publish Proposal</TooltipContent>
-                                            </Tooltip>
-                                        )}
-
-                                        {/* Tombol Cancel */}
-                                        {(proposal.status === StatusEnum.DRAFT ||
-                                            proposal.status === StatusEnum.ACTIVE) && (
-                                            <Tooltip>
-                                                <TooltipTrigger asChild>
-                                                    <Button
-                                                        size="icon"
-                                                        variant="ghost"
-                                                        className="hover:bg-gray-200 dark:hover:bg-zinc-800 cursor-pointer"
-                                                        onClick={() =>
-                                                            handleStatusClick(proposal.id, StatusEnum.CANCELLED)
-                                                        }
+                                                        className="hover:bg-yellow-100 dark:hover:bg-zinc-800 cursor-pointer"
+                                                        onClick={() => handleStatusClick(proposal.id, StatusEnum.ENDED)}
                                                     >
                                                         <Icon
-                                                            icon="lucide:x-circle"
-                                                            className="w-4 h-4 text-gray-500"
+                                                            icon="material-symbols:flag"
+                                                            className="w-4 h-4 text-yellow-500"
                                                         />
                                                     </Button>
                                                 </TooltipTrigger>
-                                                <TooltipContent>Cancel Proposal</TooltipContent>
+                                                <TooltipContent>End Proposal</TooltipContent>
                                             </Tooltip>
                                         )}
                                     </TooltipProvider>
