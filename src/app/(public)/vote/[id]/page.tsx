@@ -10,6 +10,7 @@ import {
     DialogTitle,
     DialogTrigger,
 } from '@/components/ui/dialog';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { BASE_URL } from '@/configs/url';
 import { StatusEnum } from '@/enums/status';
 import { useFetchProposalById } from '@/hooks/proposal/useFetchProposalById';
@@ -151,35 +152,37 @@ export default function DetailVote() {
                                                         </DialogDescription>
                                                     </DialogHeader>
                                                     {selectedOption && (
-                                                        <div className="space-y-5 mt-4">
-                                                            <div className="w-full h-96 relative rounded-xl overflow-hidden border border-zinc-800">
-                                                                <Image
-                                                                    src={`${BASE_URL}/uploads/proposal-images/${selectedOption.image}`}
-                                                                    alt={selectedOption.label}
-                                                                    fill
-                                                                    className="object-cover"
-                                                                />
-                                                            </div>
-                                                            <h3 className="text-xl font-bold dark:text-white">
-                                                                {selectedOption.label}
-                                                            </h3>
-                                                            <p className="text-base text-muted-foreground leading-relaxed">
-                                                                {selectedOption.description ||
-                                                                    'No further description provided.'}
-                                                            </p>
-                                                            <div className="text-sm text-muted-foreground">
-                                                                <p>
-                                                                    <strong>Vision & Goals:</strong> Empower the
-                                                                    community through transparent voting systems and
-                                                                    inclusive representation.
+                                                        <ScrollArea className="h-[600px]">
+                                                            <div className="space-y-5 mt-4">
+                                                                <div className="w-full h-96 relative rounded-xl overflow-hidden border border-zinc-800">
+                                                                    <Image
+                                                                        src={`${BASE_URL}/uploads/proposal-images/${selectedOption.image}`}
+                                                                        alt={selectedOption.label}
+                                                                        fill
+                                                                        className="object-cover"
+                                                                    />
+                                                                </div>
+                                                                <h3 className="text-xl font-bold dark:text-white">
+                                                                    {selectedOption.label}
+                                                                </h3>
+                                                                <p className="text-base text-muted-foreground leading-relaxed">
+                                                                    {selectedOption.description ||
+                                                                        'No further description provided.'}
                                                                 </p>
-                                                                <p className="mt-2">
-                                                                    <strong>Experience:</strong> Former community
-                                                                    ambassador with 3+ years in blockchain-based
-                                                                    governance.
-                                                                </p>
+                                                                <div className="text-sm text-muted-foreground">
+                                                                    <p>
+                                                                        <strong>Vision & Goals:</strong> Empower the
+                                                                        community through transparent voting systems and
+                                                                        inclusive representation.
+                                                                    </p>
+                                                                    <p className="mt-2">
+                                                                        <strong>Experience:</strong> Former community
+                                                                        ambassador with 3+ years in blockchain-based
+                                                                        governance.
+                                                                    </p>
+                                                                </div>
                                                             </div>
-                                                        </div>
+                                                        </ScrollArea>
                                                     )}
                                                 </DialogContent>
                                             </Dialog>

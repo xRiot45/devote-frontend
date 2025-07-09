@@ -11,6 +11,7 @@ import {
     DialogTrigger,
 } from '@/components/ui/dialog';
 import { Loader } from '@/components/ui/loader';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { BASE_URL } from '@/configs/url';
 import { useBreadcrumb } from '@/contexts/breadcrumb-context';
 import { StatusEnum } from '@/enums/status';
@@ -154,25 +155,27 @@ export default function ShowPage() {
                                                         </DialogDescription>
                                                     </DialogHeader>
                                                     {selectedOption && (
-                                                        <div className="space-y-5 mt-4">
-                                                            <div className="w-full h-96 relative rounded-xl overflow-hidden border border-zinc-800">
-                                                                <Image
-                                                                    src={`${BASE_URL}/uploads/proposal-images/${selectedOption.image}`}
-                                                                    alt={selectedOption.label}
-                                                                    fill
-                                                                    className="object-cover"
+                                                        <ScrollArea className="h-[600px]">
+                                                            <div className="space-y-5 mt-4">
+                                                                <div className="w-full h-screen relative rounded-xl overflow-hidden border border-zinc-800">
+                                                                    <Image
+                                                                        src={`${BASE_URL}/uploads/proposal-images/${selectedOption.image}`}
+                                                                        alt={selectedOption.label}
+                                                                        fill
+                                                                        className="object-cover"
+                                                                    />
+                                                                </div>
+                                                                <h3 className="text-xl font-bold dark:text-white">
+                                                                    {selectedOption.label}
+                                                                </h3>
+                                                                <div
+                                                                    className="prose dark:prose-invert max-w-full"
+                                                                    dangerouslySetInnerHTML={{
+                                                                        __html: selectedOption?.description || '',
+                                                                    }}
                                                                 />
                                                             </div>
-                                                            <h3 className="text-xl font-bold dark:text-white">
-                                                                {selectedOption.label}
-                                                            </h3>
-                                                            <div
-                                                                className="prose dark:prose-invert max-w-full"
-                                                                dangerouslySetInnerHTML={{
-                                                                    __html: proposal?.description || '',
-                                                                }}
-                                                            />
-                                                        </div>
+                                                        </ScrollArea>
                                                     )}
                                                 </DialogContent>
                                             </Dialog>
