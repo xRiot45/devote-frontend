@@ -1,6 +1,8 @@
 'use client';
 
+import votingAbi from '@/abi/VotingAbi.json';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import {
     Dialog,
@@ -13,6 +15,7 @@ import {
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { BASE_URL } from '@/configs/url';
 import { StatusEnum } from '@/enums/status';
+import { useLogFromSmartContract } from '@/hooks/proposal-votes/useLogFromSmartContract';
 import { useFetchProposalById } from '@/hooks/proposal/useFetchProposalById';
 import { ProposalOption } from '@/interfaces/proposal';
 import { cn } from '@/lib/utils';
@@ -22,6 +25,8 @@ import { format } from 'date-fns';
 import Image from 'next/image';
 import { useParams } from 'next/navigation';
 import { useState } from 'react';
+import { toast } from 'sonner';
+import { useAccount, useWriteContract } from 'wagmi';
 
 export default function DetailVote() {
     const params = useParams();
@@ -29,6 +34,47 @@ export default function DetailVote() {
 
     const { data: proposal, isPending, isError } = useFetchProposalById(id);
     const [selectedOption, setSelectedOption] = useState<ProposalOption | null>(null);
+    const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+
+    // Handle Smart Contract Interaction
+    const { address } = useAccount();
+    const { writeContractAsync } = useWriteContract();
+    const logVoteMutation = useLogFromSmartContract();
+
+    const handleVote = async (option: ProposalOption) => {
+        if (!proposal?.id) return toast.error('Proposal belum dimuat');
+        if (!address) return toast.error('Wallet belum terkoneksi');
+
+        try {
+            const tx = await writeContractAsync({
+                address: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS as `0x${string}`,
+                abi: votingAbi,
+                functionName: 'vote',
+                args: [Number(proposal.id), Number(option.id)],
+            });
+
+            logVoteMutation.mutate({
+                proposalId: Number(proposal.id),
+                optionId: Number(option.id),
+                voterAddress: address,
+                txHash: tx,
+                votedAt: Math.floor(Date.now() / 1000),
+            });
+
+            toast.success('Success', {
+                description: 'Vote successfully submitted!',
+            });
+
+            setIsDialogOpen(false);
+        } catch (error) {
+            console.log(error);
+            toast.error('Error', {
+                description: (error as Error).message,
+            });
+
+            setIsDialogOpen(false);
+        }
+    };
 
     return (
         <main className="relative pt-32 pb-72 overflow-hidden px-6 transition-colors duration-300 bg-white text-black dark:bg-transparent dark:text-white">
@@ -78,9 +124,10 @@ export default function DetailVote() {
                                 {proposal.title}
                             </h2>
 
-                            <p className="text-muted-foreground text-base leading-relaxed">
-                                {proposal.description || 'No description available for this proposal.'}
-                            </p>
+                            <div
+                                className="prose dark:prose-invert max-w-full"
+                                dangerouslySetInnerHTML={{ __html: proposal?.description || '' }}
+                            />
 
                             {/* Details */}
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-muted-foreground">
@@ -108,84 +155,100 @@ export default function DetailVote() {
                                     Click on each candidate to learn more about their vision and ideas.
                                 </p>
 
-                                <div className="grid grid-cols-1 md:grid-cols-2  gap-6">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     {proposal.proposalOptions
                                         .sort((a, b) => a.order - b.order)
                                         .map((option) => (
-                                            <Dialog
+                                            <Card
                                                 key={option.id}
-                                                onOpenChange={(open) => !open && setSelectedOption(null)}
+                                                className="bg-white/5 border rounded-xl transition  shadow-none"
                                             >
-                                                <DialogTrigger asChild>
-                                                    <Card
-                                                        onClick={() => setSelectedOption(option)}
-                                                        className="bg-white/5 border  rounded-xl cursor-pointer transition hover:scale-[1.02] shadow-none"
-                                                    >
-                                                        <CardContent className="flex gap-4 items-center p-4">
-                                                            <div className="w-16 h-16 relative rounded-full overflow-hidden border border-zinc-800">
-                                                                <Image
-                                                                    src={`${BASE_URL}/uploads/proposal-images/${option.image}`}
-                                                                    alt={option.label}
-                                                                    fill
-                                                                    className="object-cover"
-                                                                />
-                                                            </div>
-                                                            <div>
-                                                                <h4 className="text-lg font-semibold dark:text-white">
-                                                                    {option.label}
-                                                                </h4>
-                                                                <p className="text-sm text-muted-foreground line-clamp-2">
-                                                                    {option.description}
-                                                                </p>
-                                                            </div>
-                                                        </CardContent>
-                                                    </Card>
-                                                </DialogTrigger>
+                                                <CardContent className="flex gap-4 items-start p-4">
+                                                    <div className="w-16 h-16 relative rounded-full overflow-hidden border border-zinc-800">
+                                                        <Image
+                                                            src={`${BASE_URL}/uploads/proposal-images/${option.image}`}
+                                                            alt={option.label}
+                                                            fill
+                                                            className="object-cover"
+                                                        />
+                                                    </div>
 
-                                                <DialogContent className="sm:max-w-4xl bg-white dark:bg-zinc-900 border-none rounded-2xl">
-                                                    <DialogHeader>
-                                                        <DialogTitle className="text-2xl">
-                                                            Candidate Details
-                                                        </DialogTitle>
-                                                        <DialogDescription className="text-muted-foreground">
-                                                            Full profile and information about the selected candidate.
-                                                        </DialogDescription>
-                                                    </DialogHeader>
-                                                    {selectedOption && (
-                                                        <ScrollArea className="h-[600px]">
-                                                            <div className="space-y-5 mt-4">
-                                                                <div className="w-full h-96 relative rounded-xl overflow-hidden border border-zinc-800">
-                                                                    <Image
-                                                                        src={`${BASE_URL}/uploads/proposal-images/${selectedOption.image}`}
-                                                                        alt={selectedOption.label}
-                                                                        fill
-                                                                        className="object-cover"
-                                                                    />
-                                                                </div>
-                                                                <h3 className="text-xl font-bold dark:text-white">
-                                                                    {selectedOption.label}
-                                                                </h3>
-                                                                <p className="text-base text-muted-foreground leading-relaxed">
-                                                                    {selectedOption.description ||
-                                                                        'No further description provided.'}
-                                                                </p>
-                                                                <div className="text-sm text-muted-foreground">
-                                                                    <p>
-                                                                        <strong>Vision & Goals:</strong> Empower the
-                                                                        community through transparent voting systems and
-                                                                        inclusive representation.
-                                                                    </p>
-                                                                    <p className="mt-2">
-                                                                        <strong>Experience:</strong> Former community
-                                                                        ambassador with 3+ years in blockchain-based
-                                                                        governance.
-                                                                    </p>
-                                                                </div>
-                                                            </div>
-                                                        </ScrollArea>
-                                                    )}
-                                                </DialogContent>
-                                            </Dialog>
+                                                    <div className="space-y-2 flex-1">
+                                                        <h4 className="text-lg font-semibold dark:text-white">
+                                                            {option.label}
+                                                        </h4>
+
+                                                        {/* Tombol Lihat Detail (Dialog Trigger) */}
+                                                        <Dialog
+                                                            open={isDialogOpen}
+                                                            onOpenChange={(open) => setIsDialogOpen(open)}
+                                                        >
+                                                            <DialogTrigger asChild>
+                                                                <Button
+                                                                    variant="outline"
+                                                                    className="w-full mt-2 py-5"
+                                                                    onClick={() => {
+                                                                        setSelectedOption(option);
+                                                                        setIsDialogOpen(true);
+                                                                    }}
+                                                                >
+                                                                    View Details
+                                                                </Button>
+                                                            </DialogTrigger>
+
+                                                            <DialogContent className="sm:max-w-4xl bg-white dark:bg-zinc-900 border-none rounded-2xl">
+                                                                <DialogHeader>
+                                                                    <DialogTitle className="text-2xl">
+                                                                        Candidate Details
+                                                                    </DialogTitle>
+                                                                    <DialogDescription className="text-muted-foreground">
+                                                                        Full profile and information about the selected
+                                                                        candidate.
+                                                                    </DialogDescription>
+                                                                </DialogHeader>
+
+                                                                {selectedOption && (
+                                                                    <ScrollArea className="h-[600px]">
+                                                                        <div className="space-y-5 mt-4">
+                                                                            <div className="w-full h-screen relative rounded-xl overflow-hidden border border-zinc-800">
+                                                                                <Image
+                                                                                    src={`${BASE_URL}/uploads/proposal-images/${selectedOption.image}`}
+                                                                                    alt={selectedOption.label}
+                                                                                    fill
+                                                                                    className="object-cover"
+                                                                                />
+                                                                            </div>
+
+                                                                            <h3 className="text-xl font-bold dark:text-white">
+                                                                                {selectedOption.label}
+                                                                            </h3>
+
+                                                                            <div
+                                                                                className="prose dark:prose-invert max-w-full"
+                                                                                dangerouslySetInnerHTML={{
+                                                                                    __html:
+                                                                                        selectedOption?.description ||
+                                                                                        '',
+                                                                                }}
+                                                                            />
+
+                                                                            <Button
+                                                                                onClick={() =>
+                                                                                    handleVote(selectedOption)
+                                                                                }
+                                                                                className="bg-gradient-to-r w-full from-indigo-500 to-purple-600 text-white hover:from-indigo-600 hover:to-purple-700 transition-all py-5 cursor-pointer rounded-sm"
+                                                                            >
+                                                                                <Icon icon="mdi:vote" />
+                                                                                Vote Now
+                                                                            </Button>
+                                                                        </div>
+                                                                    </ScrollArea>
+                                                                )}
+                                                            </DialogContent>
+                                                        </Dialog>
+                                                    </div>
+                                                </CardContent>
+                                            </Card>
                                         ))}
                                 </div>
                             </div>

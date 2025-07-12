@@ -5,7 +5,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { BASE_URL } from '@/configs/url';
 import { StatusEnum } from '@/enums/status';
-import { useFetchProposals } from '@/hooks/proposal/useFetchProposals';
+import { useFetchVotingSession } from '@/hooks/voting-session/useFetchVotingSession';
 import { cn } from '@/lib/utils';
 import { statusBadgeStyleMap, statusIconMap, statusLabelMap } from '@/utils/status-badge-style';
 import { Icon } from '@iconify/react';
@@ -13,8 +13,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 export default function VotePage() {
-    const { data, isPending, isError } = useFetchProposals();
+    const { data, isPending, isError } = useFetchVotingSession();
     const proposals = data?.data;
+    console.log(proposals);
 
     return (
         <>
@@ -48,7 +49,7 @@ export default function VotePage() {
                     ) : isError ? (
                         <p className="text-red-500 text-center">Gagal memuat data proposal.</p>
                     ) : (
-                        <div className="grid grid-cols-1 md:grid-cols-2  gap-8">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             {proposals?.map((proposal) => (
                                 <Link
                                     key={proposal.id}
@@ -77,11 +78,6 @@ export default function VotePage() {
                                             <span className="text-2xl font-bold bg-gradient-to-r from-indigo-400 to-purple-500 text-transparent bg-clip-text">
                                                 {proposal.title}
                                             </span>
-
-                                            {/* Description */}
-                                            <p className="text-sm text-zinc-400 line-clamp-2 mt-2">
-                                                {proposal.description}
-                                            </p>
 
                                             {/* Metadata */}
                                             <div className="text-muted-foreground space-y-3.5">
