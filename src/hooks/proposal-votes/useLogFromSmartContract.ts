@@ -13,9 +13,9 @@ export const useLogFromSmartContract = () => {
             });
             router.push('/');
         },
-        onError: (error) => {
+        onError: () => {
             toast.error('Error', {
-                description: `Proposal vote log failed: ${error.message}`,
+                description: 'You have already logged your vote',
             });
         },
     });
