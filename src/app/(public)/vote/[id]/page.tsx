@@ -42,8 +42,8 @@ export default function DetailVote() {
     const logVoteMutation = useLogFromSmartContract();
 
     const handleVote = async (option: ProposalOption) => {
-        if (!proposal?.id) return toast.error('Proposal belum dimuat');
-        if (!address) return toast.error('Wallet belum terkoneksi');
+        if (!proposal?.id) return toast.error('Proposal not found');
+        if (!address) return toast.error('Wallet cannot be connected');
 
         try {
             const tx = await writeContractAsync({
@@ -59,10 +59,6 @@ export default function DetailVote() {
                 voterAddress: address,
                 txHash: tx,
                 votedAt: Math.floor(Date.now() / 1000),
-            });
-
-            toast.success('Success', {
-                description: 'Vote successfully submitted!',
             });
 
             setIsDialogOpen(false);
