@@ -36,36 +36,36 @@ const mainNavItems: NavGroup[] = [
             },
         ],
     },
-    {
-        group: 'Blockchain',
-        items: [
-            {
-                title: 'Wallet Connections',
-                href: '/admin/wallet-connections',
-                icon: 'material-symbols:account-balance-wallet',
-            },
-            {
-                title: 'Audit Logs',
-                href: '/admin/audit-logs',
-                icon: 'material-symbols:fact-check',
-            },
-        ],
-    },
-    {
-        group: 'Settings',
-        items: [
-            {
-                title: 'Admin Access',
-                href: '/admin/admin-access',
-                icon: 'material-symbols:admin-panel-settings',
-            },
-            {
-                title: 'System Settings',
-                href: '/admin/system-settings',
-                icon: 'material-symbols:settings',
-            },
-        ],
-    },
+    // {
+    //     group: 'Blockchain',
+    //     items: [
+    //         {
+    //             title: 'Wallet Connections',
+    //             href: '/admin/wallet-connections',
+    //             icon: 'material-symbols:account-balance-wallet',
+    //         },
+    //         {
+    //             title: 'Audit Logs',
+    //             href: '/admin/audit-logs',
+    //             icon: 'material-symbols:fact-check',
+    //         },
+    //     ],
+    // },
+    // {
+    //     group: 'Settings',
+    //     items: [
+    //         {
+    //             title: 'Admin Access',
+    //             href: '/admin/admin-access',
+    //             icon: 'material-symbols:admin-panel-settings',
+    //         },
+    //         {
+    //             title: 'System Settings',
+    //             href: '/admin/system-settings',
+    //             icon: 'material-symbols:settings',
+    //         },
+    //     ],
+    // },
 ];
 
 export default mainNavItems;
